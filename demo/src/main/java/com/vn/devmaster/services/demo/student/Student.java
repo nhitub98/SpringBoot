@@ -1,13 +1,20 @@
 package com.vn.devmaster.services.demo.student;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Component
 public class Student {
     private static List<Student> students = new ArrayList<>();
     private String id;
@@ -15,19 +22,6 @@ public class Student {
     private int age;
     private String address;
     private float gpa;
-
-    public Student(String id, String name, int age, String address, float gpa) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.address = address;
-        this.gpa = gpa;
-    }
-
-
-
-    public Student() {
-    }
 
     @Override
     public String toString() {
@@ -70,7 +64,7 @@ public class Student {
         }
     }
 
-    void display() {
+    public void display() {
         System.out.println("Hien thi danh sach sinh vien: ");
         for (Student student : students) {
             System.out.println(student);
@@ -86,7 +80,7 @@ public class Student {
     }
 
     void sortByName() {
-        System.out.println("Danh sach ten giam dan theo GPA:");
+        System.out.println("Danh sach ten giam dan theo ten");
         Collections.sort(students, (s1, s2) -> s1.getName().compareTo(s2.getName()));
         for (Student student : students) {
             System.out.println(student);

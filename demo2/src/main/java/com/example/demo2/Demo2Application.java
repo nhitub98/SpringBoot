@@ -13,14 +13,16 @@ public class Demo2Application {
 
     public static void main(String[] args) {
         ApplicationContext context= SpringApplication.run(Demo2Application.class, args);
-        Employee employee= context.getBean(Employee.class);
-        employee.wear();
-        Company company= context.getBean(Company.class);
-        company.getEmployeeDependence().work();
-        Student student= context.getBean(Student.class);
-        student.work();
-        School school= context.getBean(School.class);
-        school.getStudentDependence().wear();
+//        Employee employee= context.getBean(Employee.class);
+//        employee.wear();
+//        Company company= context.getBean(Company.class);
+//        company.getEmployeeDependence().work();
+//        Student student= context.getBean(Student.class);
+//        student.work();
+//        School school= context.getBean(School.class);
+//        school.getStudentDependence().wear();
+//        Student student1= context.getBean(Student.class);
+
 
     }
 

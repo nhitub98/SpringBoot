@@ -17,11 +17,11 @@ public class StudentService {
         return students;
     }
     public Student findById(int id) {
-        Optional<Student> optionalStudent = studentRepository.findById(id);
-        return optionalStudent.orElse(null);
+        return studentRepository.findById(id).orElse(null);
     }
     public List<Student> getAllStudents() {
-        return null;
+//        return null;
+        return studentRepository.findAll();
     }
     public void saveOrUpdate(Student student) {
         studentRepository.save(student);

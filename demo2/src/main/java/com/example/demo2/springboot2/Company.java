@@ -15,6 +15,7 @@ public class Company {
     }
 
     public void setEmployeeDependence(IPerson employeeDependence) {
+
         this.employeeDependence = employeeDependence;
     }
 
