@@ -23,13 +23,15 @@ public class StudentService {
 //        return null;
         return studentRepository.findAll();
     }
-    public void saveOrUpdate(Student student) {
-        studentRepository.save(student);
-    }
-    public void deleteStudentById(int id) {
-        studentRepository.deleteById(id);
-    }
     public Student getStudentById(int id) {
         return findById(id);
     }
+
+
+//    public void saveOrUpdate(Student student) {
+//        studentRepository.save(student);
+//    }
+//    public void deleteStudentById(int id) {
+//        studentRepository.deleteById(id);
+//    }
 }

@@ -22,16 +22,20 @@ public class StudentController {
     public Student getStudentById(@PathVariable int id) {
         return studentService.getStudentById(id);
     }
-    @DeleteMapping("/student/{id}")
-    public void deleteStudent(@PathVariable("id") int id) {
-        studentService.deleteStudentById(id);
-    }
-    @PostMapping("/student")
-    public void addStudent(@RequestBody Student student) {
-        studentService.saveOrUpdate(student);
-    }
-    @PutMapping("/student")
-    public void updateStudent(@RequestBody Student student) {
-        studentService.saveOrUpdate(student);
-    }
+
+
+
+
+//    @DeleteMapping("/student/{id}")
+//    public void deleteStudent(@PathVariable("id") int id) {
+//        studentService.deleteStudentById(id);
+//    }
+//    @PostMapping("/student")
+//    public void addStudent(@RequestBody Student student) {
+//        studentService.saveOrUpdate(student);
+//    }
+//    @PutMapping("/student")
+//    public void updateStudent(@RequestBody Student student) {
+//        studentService.saveOrUpdate(student);
+//    }
 }
