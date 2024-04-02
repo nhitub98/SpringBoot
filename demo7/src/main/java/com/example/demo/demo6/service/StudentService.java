@@ -39,7 +39,8 @@ public class StudentService {
                         .id(student.getId())
                         .name(student.getFirstName() + " " + student.getLastName())
                         .address(student.getAddress())
-                        .clazz(clazzMapper.toDto(student.getClazz()))
+//                        .clazz(clazzMapper.toDto(student.getClazz()))
+//                        .clazz(student.getClazz())
                         .subjects(subjectMapper.toDto(student.getSubjects()))
                         .build())
                 .collect(Collectors.toList());
@@ -77,7 +78,7 @@ public class StudentService {
                 .stream()
                 .map(student -> {
                     StudentDTO dto = studentMapper.toDto(student);
-                    dto.setClazz(clazzMapper.toDto(student.getClazz()));
+//                    dto.setClazz(clazzMapper.toDto(student.getClazz()));
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -91,7 +92,7 @@ public class StudentService {
                 .map(student -> StudentDTO.builder()
                         .id(student.getId())
                         .name(student.getFirstName() + " " + student.getLastName())
-                        .clazz(clazzMapper.toDto(student.getClazz()))
+//                        .clazz(clazzMapper.toDto(student.getClazz()))
                         .address(student.getAddress())
                         .build())
                 .collect(Collectors.toList());
@@ -99,10 +100,28 @@ public class StudentService {
     }
 
     public String saveStudent(StudentDTO studentDTO) {
-        Clazz clazz = clazzMapper.toEntity(studentDTO.getClazz());
-        clazz = clazzRepository.save(clazz);
-        Student student = studentMapper.toEntity(studentDTO);
-        student.setClazz(clazz);
+////        Clazz clazz = clazzMapper.toEntity(studentDTO.getClazz());
+////        clazz = clazzRepository.save(clazz);
+//        Student student = studentMapper.toEntity(studentDTO);
+//        student.setClazz(clazz);
+//        studentRepository.save(student);
+//        return "Thêm thành công";
+        Student student = new Student();
+        student.setFirstName(student.getFirstName());
+        student.setLastName(student.getLastName());
+        student.setAddress(student.getAddress());
+        student.setClazz(student.getClazz());
+        student.setPoint(student.getPoint());
+        studentRepository.save(student);
+        return "Thêm thành công";
+    }
+    public String saveStudent(Student student) {
+        Student students = new Student();
+        student.setFirstName(student.getFirstName());
+        student.setLastName(student.getLastName());
+        student.setAddress(student.getAddress());
+        student.setClazz(student.getClazz());
+        student.setPoint(student.getPoint());
         studentRepository.save(student);
         return "Thêm thành công";
     }
@@ -120,8 +139,8 @@ public class StudentService {
         }
         student.setLastName(lastName);
         student.setAddress(studentDTO.getAddress());
-        Clazz clazz = clazzMapper.toEntity(studentDTO.getClazz());
-        student.setClazz(clazz);
+//        Clazz clazz = clazzMapper.toEntity(studentDTO.getClazz());
+//        student.setClazz(clazz);
         studentRepository.save(student);
         return "cập nhật thành công";
     }
@@ -165,26 +184,40 @@ public class StudentService {
         List<IStudentPoint> iStudentPoints = studentRepository.groupSubject(id);
         StudentDTO dto = new StudentDTO();
         if (!iStudentPoints.isEmpty()) {
+            dto.setId(iStudentPoints.get(0).getId());
             dto.setName(iStudentPoints.get(0).getName());
             dto.setAddress(iStudentPoints.get(0).getAddress());
             dto.setClazz(iStudentPoints.get(0).getClazzName());
             List<SubjectDTO> subjectDTOs = new ArrayList<>();
-            List<StudentSubjectDTO> studentSubjectDTOs = new ArrayList<>();
-
             iStudentPoints.forEach(item -> {
                 SubjectDTO subjectDTO = new SubjectDTO();
+                subjectDTO.setId(item.getId());
                 subjectDTO.setName(item.getSubjectName());
+                subjectDTO.setPoint(item.getPoint());
                 subjectDTOs.add(subjectDTO);
-                StudentSubjectDTO studentSubjectDTO = new StudentSubjectDTO();
-                studentSubjectDTO.setPoint(item.getPoint());
-                studentSubjectDTOs.add(studentSubjectDTO);
             });
 
             dto.setSubjects(subjectDTOs);
-
         }
         return dto;
     }
+//            List<SubjectDTO> subjectDTOs = new ArrayList<>();
+//            List<StudentSubjectDTO> studentSubjectDTOs = new ArrayList<>();
+//            iStudentPoints.forEach(item -> {
+//                SubjectDTO subjectDTO = new SubjectDTO();
+//                subjectDTO.setId(item.getId());
+//                subjectDTO.setName(item.getSubjectName());
+//                subjectDTOs.add(subjectDTO);
+//                StudentSubjectDTO studentSubjectDTO = new StudentSubjectDTO();
+//                studentSubjectDTO.setPoint(item.getPoint());
+//                studentSubjectDTOs.add(studentSubjectDTO);
+//            });
+//
+//            dto.setSubjects(subjectDTOs);
+//
+//        }
+//        return dto;
+//    }
 
     public List<IAvgPoint> findAvgPoint(int id) {
         return studentRepository.findAvgPoint(id);

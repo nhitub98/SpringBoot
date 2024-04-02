@@ -76,13 +76,11 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     List<IStudentPoint> findStudentById3(@Param("id") int id);
 
 
-
-
     @Query(value = "SELECT\n" +
             "    CONCAT(s.last_name, ' ', s.first_name) AS name,\n" +
             "    s.address AS address,\n" +
-            "    c.name AS class,\n" +
-            "    IFNULL(AVG(ss.point), 0) AS average_point,\n" +
+            "    c.name AS clazz,\n" +
+            "    (AVG(ss.point)) AS averagePoint,\n" +
             "    GROUP_CONCAT(sub.name) AS subjects\n" +
             "FROM\n" +
             "    student s\n" +
@@ -98,17 +96,23 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
             "    s.id, s.last_name, s.first_name, s.address, c.name;", nativeQuery = true)
     List<IAvgPoint> findAvgPoint(@Param("id") int id);
 
-    @Query(value = "select\n" +
-            "       concat(s.last_name, '', s.first_name) as name,\n" +
-            "       s.address address,\n" +
-            "       c.name clazzName,\n" +
-            "       s2.name subjectName,\n" +
-            "       ss.point point\n" +
-            "from student s\n" +
-            "left join clazz c on s.id = s.clazz_id=c.id\n" +
-            "left join student_subject ss on s.id = ss.id_student\n" +
-            "left join subject s2 on s2.id = ss.id_subject\n" +
-            "where s.id= :id", nativeQuery = true)
+    @Query(value = "SELECT\n" +
+            "    s.id AS Id,\n" +
+            "    CONCAT(s.last_name, '', s.first_name) AS name,\n" +
+            "    s.address AS address,\n" +
+            "    c.name AS clazzName,\n" +
+            "    s2.name AS subjectName,\n" +
+            "    ss.point AS point\n" +
+            "FROM\n" +
+            "    student s\n" +
+            "        LEFT JOIN\n" +
+            "    clazz c ON s.clazz_id = c.id\n" +
+            "        LEFT JOIN\n" +
+            "    student_subject ss ON s.id = ss.id_student\n" +
+            "        LEFT JOIN\n" +
+            "    subject s2 ON s2.id = ss.id_subject\n" +
+            "WHERE\n" +
+            "        s.id = 7;", nativeQuery = true)
     List<IStudentPoint> groupSubject(@Param("id") int id);
 }
 

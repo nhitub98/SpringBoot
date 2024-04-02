@@ -17,8 +17,7 @@ public class StudentDTO {
     private int id;
     private String name;
     private String address;
-    private ClazzDTO clazz;
-    private float point;
+    private String clazz;
     List<SubjectDTO> subjects = new ArrayList<>();
 
 

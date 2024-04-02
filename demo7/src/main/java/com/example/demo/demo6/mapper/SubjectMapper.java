@@ -30,7 +30,6 @@ public class SubjectMapper implements EntityMapper<Subject, SubjectDTO> {
         SubjectDTO subjectDTO=new SubjectDTO();
         subjectDTO.setId(entity.getId());
         subjectDTO.setName(entity.getName());
-
         return subjectDTO;
     }
 

@@ -24,8 +24,8 @@ public class StudentMapper implements EntityMapper<Student, StudentDTO> {
                 .address(dto.getAddress())
                 .firstName(dto.getName())
                 .lastName(dto.getName())
-                .clazz(clazzMapper.toEntity(dto.getClazz()))
-                .subjects(subjectMapper.toEntity(dto.getSubjects()))
+//                .clazz(clazzMapper.toEntity(dto.getClazz()))
+//                .subjects(subjectMapper.toEntity(dto.getSubjects()))
 //                .point(dto.getPoint())
                 .build();
     }
@@ -37,7 +37,7 @@ public class StudentMapper implements EntityMapper<Student, StudentDTO> {
                 .id(entity.getId())
                 .address(entity.getAddress())
                 .name(entity.getLastName()+ " " + entity.getFirstName())
-                .clazz(clazzMapper.toDto(entity.getClazz()))
+//                .clazz(clazzMapper.toDto(entity.getClazz()))
                 .subjects(subjectMapper.toDto(entity.getSubjects()))
 //                .point(entity.getPoint())
                 .build();
