@@ -97,7 +97,7 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     List<IAvgPoint> findAvgPoint(@Param("id") int id);
 
     @Query(value = "SELECT\n" +
-            "    s.id AS Id,\n" +
+            "    s.id AS id,\n" +
             "    CONCAT(s.last_name, '', s.first_name) AS name,\n" +
             "    s.address AS address,\n" +
             "    c.name AS clazzName,\n" +
@@ -112,7 +112,7 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
             "        LEFT JOIN\n" +
             "    subject s2 ON s2.id = ss.id_subject\n" +
             "WHERE\n" +
-            "        s.id = 7;", nativeQuery = true)
+            "        s.id = :id", nativeQuery = true)
     List<IStudentPoint> groupSubject(@Param("id") int id);
 }
 
