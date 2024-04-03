@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Points</title>
+</head>
+<body>
+<h1>Student Points</h1>
+<!--<div th:text="${studentDTO.getId()}"></div>-->
+<!--<div th:text="${studentDTO.getName()}"></div>-->
+<!--<div th:text="${studentDTO.getAddress()}"></div>-->
+<!--<div th:text="${studentDTO.getClazz()}"></div>-->
+<!--<div th:text="${studentDTO.getPoint()}"></div>-->
+<!--  trả về 1 list Subject DTO-->
+<tr th:each="s :${studentDTO}">
+<div th:text="${s.getId()}"></div>
+<div th:text="${s.getName()}"></div>
+<div th:text="${s.getAddress()}"></div>
+<tr th:each="subjectDTO :${studentDTO.getSubjects()}">
+    <td th:text="${subjectDTO.getId()}"></td>
+    <td th:text="${subjectDTO.getName()}"></td>
+  <td th:text="${subjectDTO.getPoint()}"></td>
+</tr>
+
+</body>
+</html>
