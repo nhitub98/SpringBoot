@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<tr th:each="s :${students}">
+  <div th:text="${s.getId()}"></div>
+  <div th:text="${s.getName()}"></div>
+  <div th:text="${s.getAddress()}"></div>
+
+</body>
+</html>
