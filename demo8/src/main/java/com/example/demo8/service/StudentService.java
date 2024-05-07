@@ -64,9 +64,6 @@ public class StudentService {
         return findById(id);
     }
 
-    public void deleteStudent(int id) {
-        studentRepository.deleteById(id);
-    }
 
     public List<StudentDTO> findByAddress(String address) {
         List<Student> students = studentRepository.findByAddress(address);
@@ -142,6 +139,9 @@ public class StudentService {
         return "cập nhật thành công";
     }
 
+    public void deleteStudent(int id) {
+        studentRepository.deleteById(id);
+    }
 
     public List<IStudentPoint> findStudentById2() {
         List<IStudentPoint> iStudentPoints = studentRepository.findStudentById2();

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+</head>
+<body>
+
+<div layout:fragment="content" class="container-fluid">
+    <form th:action="@{/edit-product/{id}(id=${product.id})}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" th:name="_method" th:value="PUT" />
+        <input type="hidden" id="id" name="id" th:value="${product.id}" />
+
+        <label for="name">Tên sản phẩm:</label><br>
+        <input type="text" id="name" name="name" required th:value="${product.name}"><br>
+
+        <label for="description">Mô tả:</label><br>
+        <textarea id="description" name="description" required th:value="${product.description}"></textarea><br>
+
+        <label for="notes">Ghi chú:</label><br>
+        <textarea id="notes" name="notes" required th:value="${product.notes}"></textarea><br>
+
+        <label for="image">Hình ảnh:</label><br>
+        <input type="file" id="image" name="image"><br>
+
+<!--        <label for="idcategory">ID Category:</label><br>-->
+<!--        <input type="text" id="idcategory" name="idcategory" required th:value="${product.idcategory}"><br>-->
+
+        <label for="price">Giá:</label><br>
+        <input type="number" id="price" name="price" step="0.01" min="0" required th:value="${product.price}"><br>
+
+        <label for="quatity">Số lượng:</label><br>
+        <input type="number" id="quatity" name="quatity" min="0" required th:value="${product.quatity}"><br>
+
+        <label for="createdDate">Created Date:</label><br>
+        <input type="datetime-local" id="createdDate" name="createdDate" required th:value="${product.createdDate}"><br>
+
+        <label for="updatedDate">Updated Date:</label><br>
+        <input type="datetime-local" id="updatedDate" name="updatedDate" required th:value="${product.updatedDate}"><br>
+
+        <label for="createdBy">Created By:</label><br>
+        <input type="text" id="createdBy" name="createdBy" required th:value="${product.createdBy}"><br>
+
+        <label for="updatedBy">Updated By:</label><br>
+        <input type="text" id="updatedBy" name="updatedBy" required th:value="${product.updatedBy}"><br>
+
+        <label for="isactive">Is Active:</label><br>
+        <input type="number" id="isactive" name="isactive" required th:value="${product.isactive}"><br>
+
+        <input type="submit" value="Cập nhật sản phẩm">
+    </form>
+</div>
+</body>
+</html>

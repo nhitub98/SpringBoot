@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+</head>
+<body>
+<div layout:fragment="content" class="container-fluid">
+    <form th:action="@{/add-product}" method="POST" enctype="multipart/form-data">
+        <label for="name">Tên sản phẩm:</label><br>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="description">Mô tả:</label><br>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="price">Giá:</label><br>
+        <input type="number" id="price" name="price" step="0.01" min="0" required><br>
+
+        <label for="quantity">Số lượng:</label><br>
+        <input type="number" id="quantity" name="quantity" min="0" required><br>
+
+        <label for="category">Danh mục:</label><br>
+        <select id="category" name="categoryId" required>
+            <option value="1">Laptops</option>
+
+        </select><br>
+
+        <label for="notes">Ghi chú:</label><br>
+        <textarea id="notes" name="notes"></textarea><br>
+
+        <label for="image">Hình ảnh:</label><br>
+        <input type="file" id="image" name="image"><br>
+
+        <input type="submit" value="Thêm sản phẩm">
+    </form>
+</div>
+</body>
+</html>

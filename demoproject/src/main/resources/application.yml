@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/productmanagement
+    password: 12345
+    username: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+

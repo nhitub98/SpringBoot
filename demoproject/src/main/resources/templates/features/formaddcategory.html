@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+  <title>Thêm danh mục</title>
+
+  <script type="text/javascript">
+    function setCurrentDateTime() {
+      var now = new Date();
+      var currentDateTime = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+      document.getElementById("createdDate").value = currentDateTime;
+      document.getElementById("updatedDate").value = currentDateTime;
+    }
+
+    function pad(n) {
+      return n < 10 ? '0' + n : n;
+    }
+  </script>
+</head>
+<body onload="setCurrentDateTime()">
+
+<div layout:fragment="content" class="container-fluid">
+
+  <h1>Add Category</h1>
+
+  <form th:action="@{/add-category}" th:object="${category}" method="POST">
+
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" th:field="*{name}"><br><br>
+
+
+    <label for="notes">Notes</label>
+    <input type="text" id="notes" name="notes" th:field="*{notes}"><br><br>
+
+
+    <label for="icon">Icon</label>
+    <input type="text" id="icon" name="icon" th:field="*{icon}"><br><br>
+
+
+    <label for="createdDate">Created Date</label>
+    <input type="datetime-local" id="createdDate" name="createdDate" th:field="*{createdDate}"><br>
+
+
+    <label for="updatedDate">Updated Date</label>
+    <input type="datetime-local" id="updatedDate" name="updatedDate" th:field="*{updatedDate}"><br>
+
+
+    <label for="createdBy">Created By</label>
+    <input type="text" id="createdBy" name="createdBy" th:field="*{createdBy}"><br><br>
+
+
+    <label for="updatedBy">Updated By</label>
+    <input type="text" id="updatedBy" name="updatedBy" th:field="*{updatedBy}"><br><br>
+
+
+    <label for="isactive">Isactive</label>
+    <input type="text" id="isactive" name="isactive" th:field="*{isactive}"><br><br>
+
+
+    <input type="submit" value="Send">
+  </form>
+</div>
+</body>
+</html>

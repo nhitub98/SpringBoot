@@ -33,7 +33,8 @@ public class Student {
     private double point;
 //    @ManyToOne(fetch = FetchType.EAGER)
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL) // Quan hệ nhiều-một giữa Student và Clazz
+    @ManyToOne(fetch = FetchType.LAZY)
+//   ( cascade = CascadeType.ALL)) // Quan hệ nhiều-một giữa Student và Clazz
     @JoinColumn(name = "clazz_id") //// Khóa ngoại tham chiếu đến bảng Clazz
 
     private Clazz clazz;

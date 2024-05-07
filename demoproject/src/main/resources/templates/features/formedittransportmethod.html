@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/index}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Transport Method</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ZenhBWKWvBRzQ2lnRBzJfWnIWfYW7zU75Q+H5z5BIWUmvzKMGd/EV4m0pEm6VBwq" crossorigin="anonymous">
+</head>
+<body>
+<h2>Edit Transport Method</h2>
+<div layout:fragment="content" class="container">
+    <form th:action="@{/edit-transportmethod/{id}(id=${transportmethod.id})}" th:object="${transportmethod}" method="post">
+        <input type="hidden" id="id" name="id" th:value="${transportmethod.id}" readonly>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required th:value="${transportmethod.name}"><br>
+        <label for="notes">Notes:</label>
+        <input type="text" id="notes" name="notes" required th:value="${transportmethod.notes}"><br>
+        <label for="createdDate">Created Date:</label><br>
+        <input type="datetime-local" id="createdDate" name="createdDate" required th:value="${transportmethod.createdDate}"><br>
+        <label for="updatedDate">Updated Date:</label><br>
+        <input type="datetime-local" id="updatedDate" name="updatedDate" required th:value="${transportmethod.updatedDate}"><br>
+        <label for="isactive">Is Active:</label>
+        <input type="text" id="isactive" name="isactive" required th:value="${transportmethod.isactive}"><br>
+        <button type="submit">Update Transport Method Information</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-bItq4LFdt8QAQfqCVPzLHJvM8ONLRq6kIrq/JC9wFmwXloXt4GkPEwF5qMiLw/s" crossorigin="anonymous"></script>
+</body>
+</html>
