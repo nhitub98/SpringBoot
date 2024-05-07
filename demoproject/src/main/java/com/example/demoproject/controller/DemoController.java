@@ -154,7 +154,7 @@ public class DemoController {
         return "features/formedittransportmethod";
     }
 
-    @PutMapping("/edit-transportmethod/{id}")
+    @PostMapping("/edit-transportmethod/{id}")
     public String updateTransportMethod(@ModelAttribute("transportmethod") TransportMethodDTO transportMethodDTO, @PathVariable int id) { // Thêm @PathVariable cho id
         transportMethodService.updateTransportMethod(id, transportMethodDTO);
         return "redirect:/transportmethods";
@@ -176,7 +176,7 @@ public class DemoController {
     @GetMapping("/add-paymentmethod")
     public String showAddPaymentMethodForm(Model model) {
         model.addAttribute("paymentmethod", new PaymentMethodDTO());
-        return "features/findallpayment";
+        return "features/formaddpaymentmethod";
     }
 
     @PostMapping("/add-paymentmethod")
@@ -184,7 +184,7 @@ public class DemoController {
         if (paymentMethodDTO != null) {
             paymentMethodService.savePaymentMethod(paymentMethodDTO);
         }
-        return "redirect:/formaddpaymentmethods";
+        return "redirect:/paymentmethods";
     }
 
     @GetMapping("/edit-paymentmethod/{id}")
