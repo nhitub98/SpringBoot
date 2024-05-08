@@ -1,19 +1,26 @@
 package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.CategoryDTO;
-import com.example.demoproject.dto.ProductDTO;
-import com.example.demoproject.entities.Category;
 import com.example.demoproject.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping(path = "/category")
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
 
     @GetMapping("/categories")
     public List<CategoryDTO> getAllCategories() {
@@ -26,9 +33,15 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public String saveCategory(@RequestBody CategoryDTO categoryDTO) {
-        String message = categoryService.saveCategory(categoryDTO);
-        return message;
+    public String saveCategory(@RequestBody CategoryDTO categoryDTO, MultipartFile file) {
+        try {
+            String message = categoryService.saveCategory(categoryDTO, file);
+            return message;
+        } catch (Exception e) {
+            // Handle the exception here
+            e.printStackTrace(); // Log the exception for debugging (consider a proper logging framework)
+            return "Error saving category"; // Return a more informative error message
+        }
     }
 
     @PutMapping("/update/{id}")

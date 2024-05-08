@@ -1,9 +1,6 @@
 package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.*;
-import com.example.demoproject.entities.Category;
-import com.example.demoproject.entities.Orders;
-import com.example.demoproject.entities.Product;
 import com.example.demoproject.mapper.CategoryMapper;
 import com.example.demoproject.repository.CategoryRepository;
 import com.example.demoproject.repository.OrdersRepository;
@@ -14,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.sql.Date;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -46,6 +43,7 @@ public class DemoController {
     OrdersRepository ordersRepository;
     @Autowired
     OrdersService ordersService;
+
     @GetMapping("/products")
     public String findAllProduct(Model model) {
         List<ProductDTO> productDTOList = productService.findAll();
@@ -61,6 +59,7 @@ public class DemoController {
         model.addAttribute("product", new ProductDTO());
         return "features/formaddproduct";
     }
+
     @PostMapping("/add-product")
     public String addProduct(@ModelAttribute("product") ProductDTO productDTO, Model model) {
         if (productDTO != null) {
@@ -68,12 +67,14 @@ public class DemoController {
         }
         return "redirect:/products";
     }
+
     @GetMapping("/edit-product/{id}")
     public String showUpdateProductForm(@PathVariable int id, Model model) {
         ProductDTO productDTO = productService.findById(id);
         model.addAttribute("product", productDTO);
         return "features/formeditproduct";
     }
+
     @PostMapping("/edit-product/{id}")
     public String updateProduct(@PathVariable int id, @ModelAttribute("product") ProductDTO productDTO) {
         productService.updateProduct(id, productDTO);
@@ -87,8 +88,14 @@ public class DemoController {
     }
 
     @GetMapping("/categories")
-    public String findAllCategories(Model model){
+    public String findAllCategories(Model model) {
         List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
+
+
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            String baseUrl = "/img";
+                    categoryDTO.setIcon(baseUrl + categoryDTO.getIcon());
+        }
         model.addAttribute("categories", categoryDTOList);
         return "features/findallcategories";
     }
@@ -99,12 +106,17 @@ public class DemoController {
     }
 
     @PostMapping("/add-category")
-    public String addCategory(@ModelAttribute("category") CategoryDTO categoryDTO) {
+    public String addCategory(@ModelAttribute("category") CategoryDTO categoryDTO,
+                            @RequestParam("file") MultipartFile file,
+                            RedirectAttributes redirectAttributes) throws IOException {
         if (categoryDTO != null) {
-            categoryService.saveCategory(categoryDTO);
+            categoryService.saveCategory(categoryDTO, file);
+            redirectAttributes.addFlashAttribute("successMessage", "Category added successfully");
+            return "redirect:/categories";
         }
-        return "redirect:/categories";
+        return null;
     }
+
 
     @GetMapping("/edit-category/{id}")
     public String showUpdateCategoryForm(@PathVariable int id, Model model) {

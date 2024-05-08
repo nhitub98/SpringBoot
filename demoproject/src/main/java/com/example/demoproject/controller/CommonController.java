@@ -29,7 +29,7 @@ public class CommonController {
     public String displayUploadForm(Model model) {
         model.addAttribute("msg", ""); // Thêm một thuộc tính msg vào model với giá trị rỗng
         model.addAttribute("url", "https://www.concretepage.com/images/favicon.png"); // Thêm một thuộc tính url vào model với một URL ảnh mặc định
-        return "layout/upload"; // Trả về tên của file view để hiển thị form tải lên ảnh
+        return "layout/upload1"; // Trả về tên của file view để hiển thị form tải lên ảnh
     }
 
     // Xử lý việc tải lên ảnh từ form và hiển thị thông báo tải lên
@@ -46,6 +46,6 @@ public class CommonController {
 
         model.addAttribute("msg", "Uploaded images: " + fileNames.toString()); // Thêm thông báo tải lên vào model
         model.addAttribute("url", url); // Thêm URL của ảnh đã tải lên vào model
-        return "layout/upload"; // Trả về tên của file view để hiển thị thông báo tải lên và form tải lên ảnh
+        return "layout/upload1"; // Trả về tên của file view để hiển thị thông báo tải lên và form tải lên ảnh
     }
 }

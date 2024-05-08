@@ -10,3 +10,10 @@ spring:
     hibernate:
       ddl-auto: update
 
+  image:
+    upload:
+      dir: src/main/resources/static/images/images_category
+    product:
+      upload:
+        dir: src/main/resources/static/images/images_product
+

@@ -29,7 +29,9 @@
             <td th:text="${cat.id}"></td>
             <td th:text="${cat.name}"></td>
             <td th:text="${cat.notes}"></td>
-            <td th:text="${cat.icon}"></td>
+            <td>
+                <img th:src="${cat.icon}" alt="Category Icon" class="img-fluid" style="width: 80px; height: 80px; border: 1px solid black;" />
+            </td>
             <td th:text="${cat.createdDate}"></td>
             <td th:text="${cat.updatedDate}"></td>
             <td th:text="${cat.createdBy}"></td>
