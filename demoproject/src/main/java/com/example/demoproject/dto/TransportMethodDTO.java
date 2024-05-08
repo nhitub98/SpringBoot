@@ -13,7 +13,7 @@ public class TransportMethodDTO {
     private Integer id;
     private String name;
     private String notes;
-    private String  createdDate;
-    private String  updatedDate;
+    private String createdDate;
+    private String updatedDate;
     private int isactive;
 }

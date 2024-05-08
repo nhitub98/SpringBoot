@@ -1,6 +1,7 @@
 package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.*;
+import com.example.demoproject.entities.Category;
 import com.example.demoproject.mapper.CategoryMapper;
 import com.example.demoproject.repository.CategoryRepository;
 import com.example.demoproject.repository.OrdersRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -47,23 +49,29 @@ public class DemoController {
     @GetMapping("/products")
     public String findAllProduct(Model model) {
         List<ProductDTO> productDTOList = productService.findAll();
-        model.addAttribute("product", productDTOList);
-        List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
-        model.addAttribute("categories", categoryDTOList);
 
+        for (ProductDTO productDTO : productDTOList) {
+            String baseUrl = "/img/";
+            productDTO.setImage(baseUrl + productDTO.getImage());
+        }
+        model.addAttribute("product", productDTOList);
         return "features/findallproduct";
     }
+
 
     @GetMapping("/add-product")
     public String showAddProductForm(Model model) { //hiển thị form add product
         model.addAttribute("product", new ProductDTO());
+        List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
+        model.addAttribute("categories", categoryDTOList);
         return "features/formaddproduct";
     }
 
     @PostMapping("/add-product")
-    public String addProduct(@ModelAttribute("product") ProductDTO productDTO, Model model) {
+    public String addProduct(@ModelAttribute("product") ProductDTO productDTO,
+                             @RequestParam("file") MultipartFile file) throws IOException {
         if (productDTO != null) {
-            productService.saveProduct(productDTO);
+            productService.saveProduct(productDTO, file);
         }
         return "redirect:/products";
     }
@@ -76,8 +84,8 @@ public class DemoController {
     }
 
     @PostMapping("/edit-product/{id}")
-    public String updateProduct(@PathVariable int id, @ModelAttribute("product") ProductDTO productDTO) {
-        productService.updateProduct(id, productDTO);
+    public String updateProduct(@PathVariable int id, @ModelAttribute("product") ProductDTO productDTO,@RequestParam("file") MultipartFile file) {
+        productService.updateProduct(id, productDTO, file);
         return "redirect:/products";
     }
 
@@ -90,10 +98,8 @@ public class DemoController {
     @GetMapping("/categories")
     public String findAllCategories(Model model) {
         List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
-
-
         for (CategoryDTO categoryDTO : categoryDTOList) {
-            String baseUrl = "/img";
+            String baseUrl = "/img/";
                     categoryDTO.setIcon(baseUrl + categoryDTO.getIcon());
         }
         model.addAttribute("categories", categoryDTOList);
@@ -125,8 +131,8 @@ public class DemoController {
         return "features/formeditcategory";
     }
     @PostMapping("/edit-category/{id}")
-    public String updateCategory(@PathVariable int id, @ModelAttribute("category") CategoryDTO categoryDTO) {
-        categoryService.updateCategory(id, categoryDTO);
+    public String updateCategory(@PathVariable int id, @ModelAttribute("category") CategoryDTO categoryDTO,@RequestParam("file") MultipartFile file) {
+        categoryService.updateCategory(id, categoryDTO,file);
         return "redirect:/categories";
     }
 

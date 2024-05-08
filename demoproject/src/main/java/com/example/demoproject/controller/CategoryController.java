@@ -40,13 +40,13 @@ public class CategoryController {
         } catch (Exception e) {
             // Handle the exception here
             e.printStackTrace(); // Log the exception for debugging (consider a proper logging framework)
-            return "Error saving category"; // Return a more informative error message
+            return "Lỗi"; // Return a more informative error message
         }
     }
 
     @PutMapping("/update/{id}")
-    public String updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable int id) {
-        String message = categoryService.updateCategory(id, categoryDTO);
+    public String updateCategory(CategoryDTO categoryDTO, @PathVariable int id, @RequestParam("file") MultipartFile file) {
+        String message = categoryService.updateCategory(id, categoryDTO, file);
         return message;
     }
 

@@ -1,5 +1,6 @@
 package com.example.demoproject.service;
 
+import com.example.demoproject.dto.CategoryDTO;
 import com.example.demoproject.dto.ProductDTO;
 import com.example.demoproject.entities.Category;
 import com.example.demoproject.entities.Product;
@@ -8,12 +9,18 @@ import com.example.demoproject.repository.CategoryRepository;
 import com.example.demoproject.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,13 +31,14 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
+
     public List<ProductDTO> findAll() {
-        List<Product> productList = productRepository.findAll();
-        List<ProductDTO> productDTOList = productList.stream()
-                .map(productMapper::toDto)
-                .collect(Collectors.toList());
-        return productDTOList;
-    }
+            List<Product> productList = productRepository.findAll();
+            List<Category> categoryList = categoryRepository.findAll();
+            return productMapper.toDto(productList);
+        }
+
+
 
     public ProductDTO findById(int id) {
         Product product = productRepository.findById(id).orElse(null);
@@ -40,41 +48,64 @@ public class ProductService {
         return productMapper.toDto(product);
     }
 
-
-    public String saveProduct(ProductDTO productDTO) {
+    public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/img";
+    public String saveProduct(ProductDTO productDTO, MultipartFile file) throws IOException {
+        if (file != null && !file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename();
+            String fileName = StringUtils.cleanPath(originalFileName); // Clean the filename to prevent directory traversal attacks
+            File uploadPath = new File(UPLOAD_DIRECTORY);
+            File targetFile = new File(uploadPath, fileName);
+            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+                fos.write(file.getBytes());
+            }
+            String imagePath = fileName;
+            productDTO.setImage(imagePath);
+        }
         Product product = productMapper.toEntity(productDTO);
+        product.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         productRepository.save(product);
         return "Thêm thành công";
     }
 
 
-    public String updateProduct(int id, ProductDTO productDTO) {
-        Optional<Category> optionalCategory = categoryRepository.findById(productDTO.getIdcategory().getId());
-        Category category = optionalCategory.orElse(null);
 
-        if (category == null) {
-            return "Không tìm thấy danh mục có id = " + productDTO.getIdcategory().getId();
+    public String updateProduct(int id, ProductDTO productDTO, MultipartFile file) {
+        boolean existsProduct = productRepository.existsById(id);
+
+        if (!existsProduct) {
+            return "Không có Product có id = " + id;
         }
 
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        Product product = optionalProduct.orElse(null);
+        if (file != null && !file.isEmpty()) {
 
-        if (product == null) {
-            return "Không tìm thấy sản phẩm có id = " + id;
+            String originalFileName = file.getOriginalFilename();
+            String fileName = StringUtils.cleanPath(originalFileName);
+            File uploadPath = new File(UPLOAD_DIRECTORY);
+            File targetFile = new File(uploadPath, fileName);
+
+            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+                fos.write(file.getBytes());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String iconPath =  fileName;
+            productDTO.setImage(iconPath);
         }
 
-        product.setIdcategory(category);
+        Product product = productMapper.toEntity(productDTO);
+        product.setId(id);
         product.setPrice(productDTO.getPrice());
         product.setQuatity(productDTO.getQuatity());
         product.setImage(productDTO.getImage());
+//        product.setIdcategory(productDTO.getIdcategory());
         product.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         product.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
         product.setCreatedBy(productDTO.getCreatedBy());
         product.setUpdatedBy(productDTO.getUpdatedBy());
         product.setIsactive(productDTO.getIsactive());
-
         productRepository.save(product);
-
         return "Cập nhật thành công";
     }
 
@@ -84,6 +115,4 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-//    @Value("${images_product.upload.dir}")
-//    private String UPLOAD;
 }

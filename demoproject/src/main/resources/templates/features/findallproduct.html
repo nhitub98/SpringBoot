@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="content" class="container-fluid" >
+<div layout:fragment="content" class="container-fluid">
     <h1>Danh sách sản phẩm</h1>
     <table class="table table-bordered table-hover">
         <thead>
@@ -16,7 +16,7 @@
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">Notes</th>
-<!--            <th scope="col">Category</th>-->
+            <th scope="col">Category</th>
             <th scope="col">Image</th>
             <th scope="col">Price</th>
             <th scope="col">Quantity</th>
@@ -24,7 +24,7 @@
             <th scope="col">Updated Date</th>
             <th scope="col">Created By</th>
             <th scope="col">Updated By</th>
-            <th scope="col">Isactive</th>
+            <th scope="col">Is Active</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -34,11 +34,9 @@
             <td th:text="${prd.name}"></td>
             <td th:text="${prd.description}"></td>
             <td th:text="${prd.notes}"></td>
-<!--        <tr th:each="ctgr : ${categories}">-->
-<!--            <td th:text="${ctgr.id}"></td>-->
-<!--            <td th:text="${ctgr.name}"></td>-->
+            <td th:text="${prd.id}"></td>
             <td>
-                <img th:src="@{${prd.image}}" alt="Product Image" style="max-width: 100px;">
+                <img th:src="@{${prd.image}}" alt="Product Image" style="width: 80px; height: 80px;" />
             </td>
             <td th:text="${prd.price}"></td>
             <td th:text="${prd.quatity}"></td>
@@ -47,23 +45,22 @@
             <td th:text="${prd.createdBy}"></td>
             <td th:text="${prd.updatedBy}"></td>
             <td class="deprecated-label">
-                <input type="checkbox" class="toggle-switch" th:checked="${prd.getIsactive()==1}" onchange="toggleActive(this, ${prd.id})" data-toggle="toggle" data-on="Bật" data-off="Tắt" data-onstyle="success" data-offstyle="danger">
+                <input type="checkbox" class="toggle-switch" th:checked="${prd.isactive}" onchange="toggleActive(this, ${prd.id})" data-toggle="toggle" data-on="Bật" data-off="Tắt" data-onstyle="success" data-offstyle="danger">
             </td>
             <td>
                 <a th:href="@{/edit-product/{id}(id=${prd.id})}" ><i class="fas fa-edit"></i></a>
-                <a th:href="@{/products/delete/{id}(id=${prd.id})}"  onclick="return confirm('Do want to delete this product?');"><i class="fas fa-trash-alt"></i></a>
+                <a th:href="@{/delete-product/{id}(id=${prd.id})}"  onclick="return confirm('Do want to delete this product?');"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
         </tbody>
     </table>
-    <td colspan="5" class="text-center">
-        <a th:href="@{/add-product}" class="btn btn-success">Add Product</a>
-    </td>
+    <tr>
+        <td colspan="14" class="text-center">
+            <a th:href="@{/add-product}" class="btn btn-success">Add Product</a>
+        </td>
+    </tr>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2K8uLxdYk9uxtv4LMhhgbvpsbC9h5gFask5FzYLoe4yvQh8FFu6hpjEhxm" crossorigin="anonymous"></script>
-
-
-
 </body>
 </html>

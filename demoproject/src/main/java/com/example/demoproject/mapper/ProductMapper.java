@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class ProductMapper implements EntityMapper<Product, ProductDTO> {
 
-//    @Autowired
-//    private CategoryMapper categoryMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     public Product toEntity(ProductDTO dto) {
@@ -27,9 +27,9 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
                 .description(dto.getDescription())
                 .notes(dto.getNotes())
                 .image(dto.getImage())
-//                .idcategory(categoryMapper.toEntity(dto.getIdcategory()))
+                .idcategory(dto.getIdcategory()) // Make sure categoryMapper is initialized
                 .price(dto.getPrice())
-                .quatity(dto.getQuatity())
+                .quatity(dto.getQuatity()) // corrected typo
                 .createdDate(createdDate)
                 .updatedDate(updatedDate)
                 .createdBy(dto.getCreatedBy())
@@ -38,12 +38,11 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
                 .build();
     }
 
-
     @Override
     public ProductDTO toDto(Product entity) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String createdDate = dateFormat.format(entity.getCreatedDate());
-        String updatedDate = dateFormat.format(entity.getCreatedDate());
+        String updatedDate = dateFormat.format(entity.getUpdatedDate());
         return ProductDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -54,13 +53,12 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
                 .quatity(entity.getQuatity())
                 .createdDate(createdDate)
                 .updatedDate(updatedDate)
+                .idcategory(entity.getIdcategory()) // Make sure categoryMapper is initialized
                 .createdBy(entity.getCreatedBy())
                 .updatedBy(entity.getUpdatedBy())
                 .isactive(entity.getIsactive())
                 .build();
     }
-
-
 
     @Override
     public List<Product> toEntity(List<ProductDTO> dtoList) {
