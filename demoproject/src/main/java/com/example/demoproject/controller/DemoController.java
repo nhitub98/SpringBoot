@@ -2,10 +2,7 @@ package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.*;
 import com.example.demoproject.mapper.CategoryMapper;
-import com.example.demoproject.repository.CategoryRepository;
-import com.example.demoproject.repository.OrdersRepository;
-import com.example.demoproject.repository.PaymentMethodRepository;
-import com.example.demoproject.repository.TransportMethodRepository;
+import com.example.demoproject.repository.*;
 import com.example.demoproject.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +40,10 @@ public class DemoController {
     OrdersRepository ordersRepository;
     @Autowired
     OrdersService ordersService;
+    @Autowired
+    ProductImagesService productImagesService;
+    @Autowired
+    ProductImagesRepository productImagesRepository;
 
     @GetMapping("/products")
     public String findAllProduct(Model model) {
@@ -256,4 +257,47 @@ public class DemoController {
         return "redirect:/orders";
     }
 
+    @GetMapping("/productimages")
+    public String findAllProductImages(Model model){
+        List<ProductImagesDTO> productImagesDTOList = productImagesService.findAll();
+        model.addAttribute("productImages", productImagesDTOList);
+        return "features/findallproductimages";
+    }
+
+    @GetMapping("/add-productimages")
+    public String showProductImagesForm(Model model) {
+        model.addAttribute("productImages", new ProductImagesDTO());
+        return "features/formaddproductimages";
+    }
+
+    @PostMapping("/add-productimages")
+    public String addProductImages(@ModelAttribute("productImages") ProductImagesDTO productImagesDTO, Model model, @RequestParam("file") MultipartFile file) {
+        if (productImagesDTO != null) {
+            try {
+                productImagesService.saveProductImages(productImagesDTO, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "redirect:/productimages";
+    }
+
+    @GetMapping("/edit-productimages/{id}")
+    public String showUpdateProductImagesForm(@PathVariable int id, Model model) {
+        ProductImagesDTO productImagesDTO =  productImagesService.findById(id);
+        model.addAttribute("productImages", productImagesDTO);
+        return "features/formeditproductimages";
+    }
+
+    @PostMapping("/edit-productimages/{id}")
+    public String updateProductImages(@ModelAttribute("productImages") ProductImagesDTO productImagesDTO, @PathVariable int id,@RequestParam("file") MultipartFile file) {
+        productImagesService.updateProductImages(id, productImagesDTO,file);
+        return "redirect:/productimages";
+    }
+
+    @GetMapping("/delete-productimages/{id}")
+    public String deleteProductImages(@PathVariable("id") int id) {
+        productImagesService.deleteProductImages(id);
+        return "redirect:/productimages";
+    }
 }

@@ -18,7 +18,7 @@ public class ProductImagesMapper implements EntityMapper<ProductImages, ProductI
                 .id(dto.getId())
                 .name(dto.getName())
                 .url(dto.getUrl())
-//                .idProduct(dto.getIdProduct())
+                .idProduct(dto.getIdProduct())
                 .build();
     }
 

@@ -50,6 +50,8 @@
             <td>
                 <a th:href="@{/edit-product/{id}(id=${prd.id})}" ><i class="fas fa-edit"></i></a>
                 <a th:href="@{/delete-product/{id}(id=${prd.id})}"  onclick="return confirm('Do want to delete this product?');"><i class="fas fa-trash-alt"></i></a>
+                <a th:href="@{/productimages}"><i class="fas fa-image"></i>
+                </a>
             </td>
         </tr>
         </tbody>

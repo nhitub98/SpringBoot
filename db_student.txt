@@ -1,0 +1,40 @@
+create table subject
+(
+    id   int auto_increment
+        primary key,
+    name varchar(255) charset utf8mb3 null
+);
+
+create table student_subject
+(
+    id_student int   not null,
+    id_subject int   not null,
+    point      float null,
+    primary key (id_student, id_subject),
+    constraint student_subject_student_id_fk
+        foreign key (id_student) references student (id),
+    constraint student_subject_subject_id_fk
+        foreign key (id_subject) references subject (id)
+);
+create table clazz
+(
+    id   int auto_increment
+        primary key,
+    name varchar(255) charset utf8mb3 null
+);
+
+create table student
+(
+    id         int auto_increment,
+    first_name varchar(255) charset utf8mb3 null,
+    last_name  varchar(255) charset utf8mb3 null,
+    address    varchar(255) charset utf8mb3 null,
+    clazz_id   int                          null,
+    constraint student_id_uindex
+        unique (id),
+    constraint student_clazz_id_fk
+        foreign key (clazz_id) references clazz (id)
+);
+
+alter table student
+    add primary key (id);
