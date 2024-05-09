@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 public class OrdersDTO {
     private Integer id;
     private Integer idorders;
-    private java.sql.Timestamp ordersDate;
+    private String ordersDate;
     private Integer idcustomer;
     private Double totalMoney;
     private String notes;
     private String nameReciver;
     private String address;
     private String phone;
+    private int status;
 
 }

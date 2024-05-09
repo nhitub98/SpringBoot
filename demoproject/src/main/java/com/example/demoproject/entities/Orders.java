@@ -1,11 +1,16 @@
 package com.example.demoproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +25,11 @@ public class Orders {
     @Column(name = "IDORDERS")
     private Integer idorders;
 
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "ORDERS_DATE")
-    private java.sql.Timestamp ordersDate;
+    private Date ordersDate;
 
     @Column(name = "IDCUSTOMER")
     private Integer idcustomer;
@@ -41,5 +49,7 @@ public class Orders {
     @Column(name = "PHONE")
     private String phone;
 
+    @Column(name = "STATUS")
+    private int status;
 
 }

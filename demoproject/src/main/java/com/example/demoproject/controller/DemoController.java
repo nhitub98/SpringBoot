@@ -1,7 +1,6 @@
 package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.*;
-import com.example.demoproject.entities.Category;
 import com.example.demoproject.mapper.CategoryMapper;
 import com.example.demoproject.repository.CategoryRepository;
 import com.example.demoproject.repository.OrdersRepository;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -208,7 +206,7 @@ public class DemoController {
     @GetMapping("/edit-paymentmethod/{id}")
     public String showUpdatePaymentMethodForm(@PathVariable int id, Model model) {
         PaymentMethodDTO paymentMethodDTO = paymentMethodService.findPaymentMethodById(id);
-        model.addAttribute("paymentmethod", paymentMethodDTO); // Đổi từ "categories" thành "category"
+        model.addAttribute("paymentmethod", paymentMethodDTO);
         return "features/formeditpaymentmethod";
     }
 
@@ -236,6 +234,26 @@ public class DemoController {
         model.addAttribute("orders", ordersDTOList);
         return "features/findallorders";
     }
+    @GetMapping("/edit-orders/{id}")
+    public String showUpdateOrdersForm(@PathVariable int id, Model model) {
+        OrdersDTO ordersDTO = ordersService.findOrdersById(id);
+        model.addAttribute("orders", ordersDTO);
+        return "features/formeditorders";
+    }
 
+    @PostMapping("/edit-orders/{id}")
+    public String updateOrders(@ModelAttribute("orders") OrdersDTO ordersDTO, @PathVariable int id, @RequestParam("status") int status) {
+        ordersDTO.setId(id);
+        ordersDTO.setStatus(status);
+
+        ordersService.updateOrders(id, ordersDTO);
+        return "redirect:/orders";
+    }
+
+    @GetMapping("/delete-orders/{id}")
+    public String deleteOrders(@PathVariable("id") int id) {
+        ordersService.deleteOrders(id);
+        return "redirect:/orders";
+    }
 
 }

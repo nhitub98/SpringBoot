@@ -26,22 +26,22 @@ public class OrderController {
     public OrdersDTO getOrdersById(@PathVariable int id) {
         return ordersService.findOrdersById(id);
     }
-//
-//    @PostMapping("/add")
-//    public String saveOrder(@RequestBody OrdersDTO ordersDTO) {
-//        String message = ordersService.saveOrders(ordersDTO);
-//        return message;
-//    }
-//
-//    @PutMapping("/update/{id}")
-//    public String updateOrder(@RequestBody OrdersDTO ordersDTO, @PathVariable int id) {
-//        String message = ordersService.updateOrders(id, ordersDTO);
-//        return message;
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public String deleteOrder(@PathVariable int id) {
-//        ordersService.deleteOrders(id);
-//        return "Xóa thành công";
-//    }
+
+    @PostMapping("/add")
+    public String saveOrders(@RequestBody OrdersDTO ordersDTO) {
+        String message = ordersService.saveOrders(ordersDTO);
+        return message;
+    }
+
+    @PutMapping("/update/{id}")
+    public String updateOrder(@RequestBody OrdersDTO ordersDTO, @PathVariable int id) {
+        String message = ordersService.updateOrders(id, ordersDTO);
+        return message;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteOrder(@PathVariable int id) {
+        ordersService.deleteOrders(id);
+        return "Xóa thành công";
+    }
 }
