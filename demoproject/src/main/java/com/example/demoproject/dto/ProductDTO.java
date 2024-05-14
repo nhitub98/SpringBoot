@@ -19,6 +19,7 @@ public class ProductDTO {
     private String description;
     private String notes;
     private String image;
+    private Integer idCategory;
     private CategoryDTO categoryDTO;
     private Double price;
     private Integer quatity;

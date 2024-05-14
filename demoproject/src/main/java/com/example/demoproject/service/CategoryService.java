@@ -53,11 +53,9 @@ public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "
                 fos.write(file.getBytes());
             }
 
-            // Set the iconPath to the original filename
             String iconPath =  fileName;
             categoryDTO.setIcon(iconPath);
         }
-
         Category category = categoryMapper.toEntity(categoryDTO);
         category.setCreatedDate(LocalDateTime.now());
         category.setUpdatedDate(LocalDateTime.now());
@@ -93,8 +91,6 @@ public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "
 
         Category category = categoryMapper.toEntity(categoryDTO);
         category.setId(id);
-//        category.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
-//        category.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
         category.setCreatedDate(LocalDateTime.now());
         category.setUpdatedDate(LocalDateTime.now());
         categoryRepository.save(category);

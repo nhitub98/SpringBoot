@@ -22,6 +22,6 @@ public class CategoryDTO  {
     private LocalDateTime updatedDate;
     private String createdBy;
     private String updatedBy;
-    private int isactive; //để là 0,1
+    private int isactive;
     }
 

@@ -4,14 +4,13 @@
       layout:decorate="~{layout/index}">
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <title>Phương thức thanh toán</title>
 </head>
 <body>
 <div layout:fragment="content" class="container-fluid">
     <h1>Phương thức thanh toán</h1>
-    <a th:href="@{/add-paymentmethod}"><i class="fas fa-plus-circle"></i>Add Payment Method</a>
+
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
@@ -48,7 +47,8 @@
         </tr>
         <tr>
             <td colspan="9" class="text-center">
-
+                <a th:href="@{/add-paymentmethod}" class="btn btn-success">Add Payment Method</a>
+            </td>
             </td>
         </tr>
         </tbody>

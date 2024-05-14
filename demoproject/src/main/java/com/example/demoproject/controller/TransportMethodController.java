@@ -6,43 +6,56 @@ import com.example.demoproject.dto.TransportMethodDTO;
 import com.example.demoproject.service.CategoryService;
 import com.example.demoproject.service.TransportMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/transportmethod")
+@Controller
 public class TransportMethodController {
     @Autowired
-    private TransportMethodService transportMethodService;
+    TransportMethodService transportMethodService;
 
     @GetMapping("/transportmethods")
-    public List<TransportMethodDTO> getAllTransportMethod() {
-        return transportMethodService.findAllTransportMethod();
+    public String findAllTransportMethods(Model model){
+        List<TransportMethodDTO> transportMethodDTOList = transportMethodService.findAllTransportMethod();
+        model.addAttribute("transportmethods", transportMethodDTOList);
+        return "features/transportmethod/all_transportmethods";
+    }
+    @GetMapping("/add-transportmethod")
+    public String showTransportMethodForm(Model model) {
+        model.addAttribute("transportmethod", new TransportMethodDTO());
+        return "features/transportmethod/add_transportmethod";
     }
 
-    @GetMapping("/transportmethod/{id}")
-    public TransportMethodDTO getTransportMethodById(@PathVariable int id) {
-
-        return transportMethodService.findTransportMethodById(id);
+    @PostMapping("/add-transportmethod")
+    public String addTransportMethod(@ModelAttribute("transportmethod") TransportMethodDTO transportMethodDTO, Model model) {
+        if (transportMethodDTO != null) {
+            transportMethodService.saveTransportMethod(transportMethodDTO);
+        }
+        return "redirect:/transportmethods";
     }
 
-    @PostMapping("/add")
-    public String saveTransportMethod(@RequestBody TransportMethodDTO transportMethodDTO) {
-        String message = transportMethodService.saveTransportMethod(transportMethodDTO);
-        return message;
+    @GetMapping("/edit-transportmethod/{id}")
+    public String showUpdateTransportMethodForm(@PathVariable int id, Model model) {
+        TransportMethodDTO transportMethodDTO= transportMethodService.findTransportMethodById(id);
+        model.addAttribute("transportmethod", transportMethodDTO); // Đổi từ "categories" thành "category"
+        return "features/transportmethod/update_transportmethod";
     }
 
-    @PutMapping("/update/{id}")
-    public String updateTransportMethod(@RequestBody TransportMethodDTO transportMethodDTO, @PathVariable int id) {
-        String message = transportMethodService.updateTransportMethod(id, transportMethodDTO);
-        return message;
+    @PostMapping("/edit-transportmethod/{id}")
+    public String updateTransportMethod(@ModelAttribute("transportmethod") TransportMethodDTO transportMethodDTO, @PathVariable int id) { // Thêm @PathVariable cho id
+        transportMethodService.updateTransportMethod(id, transportMethodDTO);
+        return "redirect:/transportmethods";
     }
-    @DeleteMapping("/delete/{id}")
-    public String deleteTransportMethod(@PathVariable int id) {
+
+    @GetMapping("/delete-transportmethod/{id}")
+    public String deleteTransportMethod(@PathVariable("id") int id) {
         transportMethodService.deleteTransportMethod(id);
-        return "Xóa thành công";
+        return "redirect:/transportmethods";
     }
+
 }
 
 

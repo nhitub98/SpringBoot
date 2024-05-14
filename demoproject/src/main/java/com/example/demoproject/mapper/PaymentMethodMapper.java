@@ -14,29 +14,29 @@ import java.util.List;
 public class PaymentMethodMapper implements EntityMapper<PaymentMethod, PaymentMethodDTO> {
     @Override
     public PaymentMethod toEntity(PaymentMethodDTO dto) {
-        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
-        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
+//        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
+//        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
         return PaymentMethod.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .notes(dto.getNotes())
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
+                .createdDate(dto.getCreatedDate())
+                .updatedDate(dto.getUpdatedDate())
                 .isactive(dto.getIsactive())
                 .build();
     }
 
     @Override
     public PaymentMethodDTO toDto(PaymentMethod entity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-        String createdDate = dateFormat.format(entity.getCreatedDate());
-        String updatedDate = dateFormat.format(entity.getUpdatedDate());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+//        String createdDate = dateFormat.format(entity.getCreatedDate());
+//        String updatedDate = dateFormat.format(entity.getUpdatedDate());
         return PaymentMethodDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
                 .notes(entity.getNotes())
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
+                .createdDate(entity.getCreatedDate())
+                .updatedDate(entity.getUpdatedDate())
                 .isactive(entity.getIsactive())
                 .build();
     }

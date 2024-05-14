@@ -5,44 +5,54 @@ import com.example.demoproject.dto.PaymentMethodDTO;
 import com.example.demoproject.dto.ProductDTO;
 import com.example.demoproject.service.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RestController
-@RequestMapping(path = "/pttt")
+@Controller
 public class PaymentMethodController {
     @Autowired
     PaymentMethodService paymentMethodService;
 
     @GetMapping("/paymentmethods")
-    public List<PaymentMethodDTO> getAllPaymentMethod() {
-
-        return paymentMethodService.findAllPaymentMethod();
+    public String findAllPaymentMethods(Model model){
+        List<PaymentMethodDTO> paymentMethodDTOList = paymentMethodService.findAllPaymentMethod();
+        model.addAttribute("paymentmethods", paymentMethodDTOList);
+        return "features/paymentmethod/all_paymentmethod";
     }
-    @GetMapping("/payment-methods/{id}")
-    public PaymentMethodDTO getPaymentMethodById(@PathVariable int id) {
-
-        return paymentMethodService.findPaymentMethodById(id);
-    }
-
-    @PostMapping("/add")
-    public String savePaymentMethod(@RequestBody PaymentMethodDTO paymentMethodDTO) {
-        String message = paymentMethodService.savePaymentMethod(paymentMethodDTO);
-        return message;
+    @GetMapping("/add-paymentmethod")
+    public String showAddPaymentMethodForm(Model model) {
+        model.addAttribute("paymentmethod", new PaymentMethodDTO());
+        return "features/paymentmethod/add_paymentmethod";
     }
 
-    @PutMapping("/update/{id}")
-    public String updatePaymentMethod(@RequestBody PaymentMethodDTO paymentMethodDTO, @PathVariable int id) {
-        String message = paymentMethodService.updatePaymentMethod(id, paymentMethodDTO);
-        return message;
+    @PostMapping("/add-paymentmethod")
+    public String addPaymentMethod(@ModelAttribute("paymentmethod") PaymentMethodDTO paymentMethodDTO, Model model) {
+        if (paymentMethodDTO != null) {
+            paymentMethodService.savePaymentMethod(paymentMethodDTO);
+        }
+        return "redirect:/paymentmethods";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deletePaymentMethod(@PathVariable int id) {
+    @GetMapping("/edit-paymentmethod/{id}")
+    public String showUpdatePaymentMethodForm(@PathVariable int id, Model model) {
+        PaymentMethodDTO paymentMethodDTO = paymentMethodService.findPaymentMethodById(id);
+        model.addAttribute("paymentmethod", paymentMethodDTO);
+        return "features/paymentmethod/update_paymentmethod";
+    }
+
+    @PostMapping("/edit-paymentmethod/{id}")
+    public String updatePaymentMethod(@ModelAttribute("paymentmethod") PaymentMethodDTO paymentMethodDTO, @PathVariable int id) { // Thêm @PathVariable cho id
+        paymentMethodDTO.setId(id);
+        paymentMethodService.updatePaymentMethod(id, paymentMethodDTO);
+        return "redirect:/paymentmethods";
+    }
+    @GetMapping("/delete-paymentmethod/{id}")
+    public String deletePaymentMethod(@PathVariable("id") int id) {
         paymentMethodService.deletePaymentMethod(id);
-        return "Xóa thành công";
+        return "redirect:/paymentmethods";
     }
-
 
 }
 

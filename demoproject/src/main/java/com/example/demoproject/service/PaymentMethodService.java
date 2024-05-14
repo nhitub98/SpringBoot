@@ -10,6 +10,7 @@ import com.example.demoproject.repository.PaymentMethodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,8 @@ public class PaymentMethodService {
     public String savePaymentMethod(PaymentMethodDTO paymentMethodDTO) {
         PaymentMethod paymentMethod = paymentMethodMapper.toEntity(paymentMethodDTO);
         paymentMethodRepository.save(paymentMethod);
+        paymentMethod.setCreatedDate(LocalDateTime.now());
+        paymentMethod.setUpdatedDate(LocalDateTime.now());
         return "Thêm thành công";
     }
 
@@ -46,7 +49,8 @@ public class PaymentMethodService {
         }
         paymentMethod.setName(paymentMethodDTO.getName());
         paymentMethod.setNotes(paymentMethodDTO.getNotes());
-        paymentMethod.setUpdatedDate(new java.sql.Timestamp(new Date().getTime()));
+        paymentMethod.setCreatedDate(LocalDateTime.now());
+        paymentMethod.setUpdatedDate(LocalDateTime.now());
         paymentMethod.setIsactive(paymentMethodDTO.getIsactive());
 
         paymentMethodRepository.save(paymentMethod);

@@ -5,20 +5,7 @@
 <head>
   <title>Thêm danh mục</title>
 
-  <script type="text/javascript">
-    function setCurrentDateTime() {
-      var now = new Date();
-      var currentDateTime = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-      document.getElementById("createdDate").value = currentDateTime;
-      document.getElementById("updatedDate").value = currentDateTime;
-    }
 
-    function pad(n) {
-      return n < 10 ? '0' + n : n;
-    }
-  </script>
-</head>
-<body onload="setCurrentDateTime()">
 
 <div layout:fragment="content" class="container-fluid">
 
@@ -46,12 +33,12 @@
 <!--    <input type="datetime-local" id="updatedDate" name="updatedDate" th:field="*{updatedDate}"><br>-->
 
 
-<!--    <label for="createdBy">Created By</label>-->
-<!--    <input type="text" id="createdBy" name="createdBy" th:field="*{createdBy}"><br><br>-->
+    <label for="createdBy">Created By</label>
+    <input type="text" id="createdBy" name="createdBy" th:field="*{createdBy}"><br><br>
 
 
-<!--    <label for="updatedBy">Updated By</label>-->
-<!--    <input type="text" id="updatedBy" name="updatedBy" th:field="*{updatedBy}"><br><br>-->
+    <label for="updatedBy">Updated By</label>
+    <input type="text" id="updatedBy" name="updatedBy" th:field="*{updatedBy}"><br><br>
 
 
     <label for="isactive">Isactive</label>

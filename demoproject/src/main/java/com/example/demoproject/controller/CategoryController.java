@@ -4,8 +4,14 @@ import com.example.demoproject.dto.CategoryDTO;
 import com.example.demoproject.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,44 +20,63 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping(path = "/category")
+@Controller
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-
     @GetMapping("/categories")
-    public List<CategoryDTO> getAllCategories() {
-        return categoryService.findAllCategories();
-    }
-
-    @GetMapping("/category/{id}")
-    public CategoryDTO getCategoryById(@PathVariable int id) {
-        return categoryService.findByIdParent(id);
-    }
-
-    @PostMapping("/add")
-    public String saveCategory(@RequestBody CategoryDTO categoryDTO, MultipartFile file) {
-        try {
-            String message = categoryService.saveCategory(categoryDTO, file);
-            return message;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Lỗi";
+    public String findAllCategories(Model model) {
+        List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            String baseUrl = "/img/";
+            categoryDTO.setIcon(baseUrl + categoryDTO.getIcon());
         }
+        model.addAttribute("categories", categoryDTOList);
+        return "features/category/all_categories";
     }
 
-    @PutMapping("/update/{id}")
-    public String updateCategory(CategoryDTO categoryDTO, @PathVariable int id, @RequestParam("file") MultipartFile file) {
-        String message = categoryService.updateCategory(id, categoryDTO, file);
-        return message;
+
+    @GetMapping("/add-category")
+    public String showAddCategoryForm(Model model) {
+        model.addAttribute("category", new CategoryDTO());
+        return "features/category/add_category";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable int id) {
+    @PostMapping("/add-category")
+    public String addCategory(@ModelAttribute("category") CategoryDTO categoryDTO,
+                              @RequestParam("file") MultipartFile file,
+                              RedirectAttributes redirectAttributes) throws IOException {
+        if (categoryDTO != null) {
+            categoryDTO.setCreatedDate(LocalDateTime.now());
+            categoryDTO.setUpdatedDate(LocalDateTime.now());
+            categoryService.saveCategory(categoryDTO, file);
+            redirectAttributes.addFlashAttribute("successMessage", "Category added successfully");
+            return "redirect:/categories";
+        }
+        return null;
+    }
+
+    @GetMapping("/edit-category/{id}")
+    public String showUpdateCategoryForm(@PathVariable int id, Model model) {
+        CategoryDTO categoryDTO = categoryService.findByIdParent(id);
+        model.addAttribute("category", categoryDTO);
+        return "features/category/update_category";
+    }
+    @PostMapping("/edit-category/{id}")
+    public String updateCategory(@PathVariable int id, @ModelAttribute("category") CategoryDTO categoryDTO,@RequestParam("file") MultipartFile file) {
+        categoryDTO.setCreatedDate(LocalDateTime.now());
+        categoryDTO.setUpdatedDate(LocalDateTime.now());
+        categoryService.updateCategory(id, categoryDTO,file);
+        return "redirect:/categories";
+    }
+
+    @GetMapping("/delete-category/{id}")
+    public String deleteCategory(@PathVariable("id") int id) {
         categoryService.deleteCategory(id);
-        return "Xóa thành công";
+        return "redirect:/categories";
     }
+
+
 }

@@ -20,7 +20,7 @@
         <input type="file" id="file" name="file" accept="image/*" required><br><br>
 
         <label for="idcategory">Danh mục:</label><br>
-        <select id="idcategory" name="idcategory" required>
+        <select id="idcategory" name="idcategory" th:field="*{idCategory}" required>
             <option value="">Chọn danh mục</option>
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
         </select><br>

@@ -55,7 +55,6 @@ public class OrdersService {
 //        orders.setNotes(ordersDTO.getNotes());
 //        orders.setOrdersDate(Timestamp.valueOf(LocalDateTime.now()));
         orders.setStatus(ordersDTO.getStatus());
-
         ordersRepository.save(orders);
 
         return "Cập nhật đơn hàng";

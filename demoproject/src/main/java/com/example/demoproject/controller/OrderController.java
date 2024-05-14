@@ -1,47 +1,62 @@
 package com.example.demoproject.controller;
 
-import com.example.demoproject.dto.CategoryDTO;
-import com.example.demoproject.dto.OrdersDTO;
-import com.example.demoproject.service.CategoryService;
-import com.example.demoproject.service.OrdersService;
+import com.example.demoproject.dto.*;
+import com.example.demoproject.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/orders")
+@Controller
 public class OrderController {
     @Autowired
     private OrdersService ordersService;
+    @Autowired
+    OrdersDetailsService orderDetailsService;
+    @Autowired
+    OrdersPaymentService ordersPaymentService;
+    @Autowired
+    OrdersTransportService ordersTransportService;
 
     @GetMapping("/orders")
-    public List<OrdersDTO> getAllOrders() {
-        return ordersService.findAllOrders();
+    public String findAllOrders(Model model){
+        List<OrdersDTO> ordersDTOList = ordersService.findAllOrders();
+        model.addAttribute("orders", ordersDTOList);
+        return "features/order/all_orders";
+    }
+    @GetMapping("/edit-orders/{id}")
+    public String showUpdateOrdersForm(@PathVariable int id, Model model) {
+        OrdersDTO ordersDTO = ordersService.findOrdersById(id);
+        model.addAttribute("orders", ordersDTO);
+        OrdersDetailsDTO ordersDetailsDTO = orderDetailsService.findOrdersDetailsById(id);
+        model.addAttribute("orders_details", ordersDetailsDTO);
+        OrdersPaymentDTO ordersPaymentDTO = ordersPaymentService.findOrdersPaymentById(id);
+        model.addAttribute("orders_payment",ordersPaymentDTO);
+        OrdersTransportDTO ordersTransportDTO = ordersTransportService.findOrdersTransportById(id);
+        model.addAttribute("orders_transport",ordersTransportDTO);
+        return "features/order/update_order";
     }
 
-    @GetMapping("/order/{id}")
-    public OrdersDTO getOrdersById(@PathVariable int id) {
-        return ordersService.findOrdersById(id);
+    @PostMapping("/edit-orders/{id}")
+    public String updateOrders(@ModelAttribute("orders") OrdersDTO ordersDTO, @PathVariable int id, @RequestParam("status") int status,Model model) {
+        ordersDTO.setId(id);
+        ordersDTO.setStatus(status);
+        ordersService.updateOrders(id, ordersDTO);
+        OrdersDetailsDTO ordersDetailsDTO = orderDetailsService.findOrdersDetailsById(id);
+        model.addAttribute("orders_details",ordersDetailsDTO);
+        OrdersPaymentDTO ordersPaymentDTO = ordersPaymentService.findOrdersPaymentById(id);
+        model.addAttribute("orders_payment",ordersPaymentDTO);
+        OrdersTransportDTO ordersTransportDTO = ordersTransportService.findOrdersTransportById(id);
+        model.addAttribute("orders_transport",ordersTransportDTO);
+        return "redirect:/orders";
     }
 
-    @PostMapping("/add")
-    public String saveOrders(@RequestBody OrdersDTO ordersDTO) {
-        String message = ordersService.saveOrders(ordersDTO);
-        return message;
-    }
-
-    @PutMapping("/update/{id}")
-    public String updateOrder(@RequestBody OrdersDTO ordersDTO, @PathVariable int id) {
-        String message = ordersService.updateOrders(id, ordersDTO);
-        return message;
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteOrder(@PathVariable int id) {
+    @GetMapping("/delete-orders/{id}")
+    public String deleteOrders(@PathVariable("id") int id) {
         ordersService.deleteOrders(id);
-        return "Xóa thành công";
+        return "redirect:/orders";
     }
 }

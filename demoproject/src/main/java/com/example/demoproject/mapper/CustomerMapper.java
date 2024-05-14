@@ -15,7 +15,7 @@ import java.util.List;
 public class CustomerMapper implements EntityMapper<Customer, CustomerDTO> {
     @Override
     public Customer toEntity(CustomerDTO dto) {
-            Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
+//            Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
             return Customer.builder()
                     .id(dto.getId())
                     .name(dto.getName())
@@ -23,15 +23,15 @@ public class CustomerMapper implements EntityMapper<Customer, CustomerDTO> {
                     .address(dto.getAddress())
                     .email(dto.getEmail())
                     .phone(dto.getPhone())
-                    .createdDate(createdDate)
+                    .createdDate(dto.getCreatedDate())
                     .isactive(dto.getIsactive())
                     .build();
         }
 
     @Override
     public CustomerDTO toDto(Customer entity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String createdDateString = dateFormat.format(entity.getCreatedDate());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String createdDateString = dateFormat.format(entity.getCreatedDate());
         return CustomerDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -39,7 +39,7 @@ public class CustomerMapper implements EntityMapper<Customer, CustomerDTO> {
                 .address(entity.getAddress())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
-                .createdDate(createdDateString)
+                .createdDate(entity.getCreatedDate())
                 .isactive(entity.getIsactive())
                 .build();
     }

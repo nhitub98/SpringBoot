@@ -18,12 +18,12 @@ import java.util.List;
 public class OrdersMapper implements EntityMapper<Orders, OrdersDTO>{
     @Override
     public Orders toEntity(OrdersDTO dto) {
-        Timestamp ordersDate = DateUtils.stringToTimestamp(dto.getOrdersDate());
+//        Timestamp ordersDate = DateUtils.stringToTimestamp(dto.getOrdersDate());
 
         return Orders.builder()
                 .id(dto.getId())
                 .idorders(dto.getIdorders())
-                .ordersDate(ordersDate)
+                .ordersDate(dto.getOrdersDate())
                 .idcustomer(dto.getIdcustomer())
                 .totalMoney(dto.getTotalMoney())
                 .notes(dto.getNotes())
@@ -36,13 +36,13 @@ public class OrdersMapper implements EntityMapper<Orders, OrdersDTO>{
 
     @Override
     public OrdersDTO toDto(Orders entity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String ordersDate = dateFormat.format(entity.getOrdersDate());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String ordersDate = dateFormat.format(entity.getOrdersDate());
 
         return OrdersDTO.builder()
                 .id(entity.getId())
                 .idorders(entity.getIdorders())
-                .ordersDate(ordersDate)
+                .ordersDate(entity.getOrdersDate())
                 .idcustomer(entity.getIdcustomer())
                 .totalMoney(entity.getTotalMoney())
                 .notes(entity.getNotes())

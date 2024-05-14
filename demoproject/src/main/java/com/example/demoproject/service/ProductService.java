@@ -1,10 +1,8 @@
 package com.example.demoproject.service;
 
-import com.example.demoproject.dto.CategoryDTO;
 import com.example.demoproject.dto.ProductDTO;
 import com.example.demoproject.entities.Category;
 import com.example.demoproject.entities.Product;
-import com.example.demoproject.entities.ProductImages;
 import com.example.demoproject.mapper.CategoryMapper;
 import com.example.demoproject.mapper.ProductMapper;
 import com.example.demoproject.repository.CategoryRepository;
@@ -17,19 +15,16 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ProductService {
+
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final ProductImagesRepository productImagesRepository;
@@ -65,29 +60,23 @@ public class ProductService {
             productDTO.setImage(imagePath);
         }
         Category category = categoryMapper.toEntity(productDTO.getCategoryDTO());
-        category = categoryRepository.save(category);
+        Optional<Category> allCategories = categoryRepository.findById(productDTO.getIdCategory());
         Product product = productMapper.toEntity(productDTO);
 //        product.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
         product.setCreatedDate(LocalDateTime.now());
         product.setUpdatedDate(LocalDateTime.now());
-        product.setCategory(category);
         productRepository.save(product);
         return "Thêm thành công";
     }
-
-    public String updateProduct(int id, ProductDTO productDTO, MultipartFile file) {
-        boolean existsProduct = productRepository.existsById(id);
-        if (!existsProduct) {
-            return "Không có Product có id = " + id;
+    public String updateProduct(int id, ProductDTO productDTO, MultipartFile file) throws ProductUpdateException {
+        if (!productRepository.existsById(id)) {
+            throw new ProductUpdateException("Không có Product có id = " + id);
         }
-
         Optional<Category> optionalCategory = categoryRepository.findById(productDTO.getCategoryDTO().getId());
         if (!optionalCategory.isPresent()) {
-            return "Không tìm thấy danh mục có id = " + productDTO.getCategoryDTO().getId();
+            throw new ProductUpdateException("Không tìm thấy danh mục có id = " + productDTO.getCategoryDTO().getId());
         }
-
         Category category = optionalCategory.get();
-
         if (file != null && !file.isEmpty()) {
             String originalFileName = file.getOriginalFilename();
             String fileName = StringUtils.cleanPath(originalFileName);
@@ -99,17 +88,27 @@ public class ProductService {
                 String imagePath = fileName;
                 productDTO.setImage(imagePath);
             } catch (IOException e) {
-                e.printStackTrace();
-                return "Có lỗi xảy ra khi tải ảnh lên!";
+                throw new ProductUpdateException("Có lỗi xảy ra khi tải ảnh lên!", e);
             }
         }
-
         Product product = productMapper.toEntity(productDTO);
         product.setId(id);
         product.setCategory(category);
         productRepository.save(product);
 
         return "Cập nhật thành công";
+    }
+
+
+    public class ProductUpdateException extends Exception {
+
+        public ProductUpdateException(String message) {
+            super(message);
+        }
+
+        public ProductUpdateException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 
 

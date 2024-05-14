@@ -12,6 +12,7 @@ import com.example.demoproject.repository.PaymentMethodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,8 +48,7 @@ public class CustomerService {
 
     public void saveCustomer(Customer customer) {
         customer.setRole(2);
+        customer.setCreatedDate(LocalDateTime.now());
         customerRepository.save(customer);
     }
-
-
 }

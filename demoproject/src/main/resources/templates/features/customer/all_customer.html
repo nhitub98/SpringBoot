@@ -33,7 +33,7 @@
       <td th:text="${cus.email}"></td>
       <td th:text="${cus.phone}"></td>
       <td th:text="${cus.createdDate}"></td>
-      <td th:text="${cus.isactive}"></td>
+      <td th:text="${cus.isactive} ? 'Active' : 'Isactive'"></td>
     </tr>
     </tbody>
   </table>

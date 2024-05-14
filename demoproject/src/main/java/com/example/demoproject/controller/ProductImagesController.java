@@ -5,13 +5,15 @@ import com.example.demoproject.dto.ProductImagesDTO;
 import com.example.demoproject.entities.ProductImages;
 import com.example.demoproject.service.ProductImagesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/productimages")
+@Controller
 public class ProductImagesController {
 
     @Autowired
@@ -19,39 +21,45 @@ public class ProductImagesController {
 
 
     @GetMapping("/productimages")
-    public List<ProductImagesDTO> getAllProductImages() {
-        return productImagesService.findAll();
+    public String findAllProductImages(Model model){
+        List<ProductImagesDTO> productImagesDTOList = productImagesService.findAll();
+        model.addAttribute("productImages", productImagesDTOList);
+        return "features/productimages/all_product_images";
     }
 
-    @GetMapping("/productimages/{id}")
-    public ProductImagesDTO getProductImagesById(@PathVariable int id) {
-        return productImagesService.findById(id);
+    @GetMapping("/add-productimages")
+    public String showProductImagesForm(Model model) {
+        model.addAttribute("productImages", new ProductImagesDTO());
+        return "features/add_product_images";
     }
 
-
-
-    @PostMapping("/add")
-    public String saveProductImages(@RequestBody ProductImagesDTO productImagesDTO, MultipartFile file) {
-        try {
-            String message = productImagesService.saveProductImages(productImagesDTO, file);
-            return message;
-        } catch (Exception e) {
-            // Handle the exception here
-            e.printStackTrace(); // Log the exception for debugging (consider a proper logging framework)
-            return "Lỗi"; // Return a more informative error message
+    @PostMapping("/add-productimages")
+    public String addProductImages(@ModelAttribute("productImages") ProductImagesDTO productImagesDTO, Model model, @RequestParam("file") MultipartFile file) {
+        if (productImagesDTO != null) {
+            try {
+                productImagesService.saveProductImages(productImagesDTO, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return "redirect:/productimages";
     }
 
-    @PutMapping("/update/{id}")
-    public String updateProductImages(ProductImagesDTO productImagesDTO, @PathVariable int id, @RequestParam("file") MultipartFile file) {
-        String message = productImagesService.updateProductImages(id, productImagesDTO, file);
-        return message;
+    @GetMapping("/edit-productimages/{id}")
+    public String showUpdateProductImagesForm(@PathVariable int id, Model model) {
+        ProductImagesDTO productImagesDTO =  productImagesService.findById(id);
+        model.addAttribute("productImages", productImagesDTO);
+        return "features/formeditproductimages";
     }
-
-    @DeleteMapping("/delete/{id}")
-    public String deleteProductImages(@PathVariable int id) {
+    @PostMapping("/edit-productimages/{id}")
+    public String updateProductImages(@ModelAttribute("productImages") ProductImagesDTO productImagesDTO, @PathVariable int id,@RequestParam("file") MultipartFile file) {
+        productImagesService.updateProductImages(id, productImagesDTO,file);
+        return "redirect:/productimages";
+    }
+    @GetMapping("/delete-productimages/{id}")
+    public String deleteProductImages(@PathVariable("id") int id) {
         productImagesService.deleteProductImages(id);
-        return "Xóa thành công";
+        return "redirect:/productimages";
     }
 }
 

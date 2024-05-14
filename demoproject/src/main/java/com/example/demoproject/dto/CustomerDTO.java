@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,7 +20,7 @@ public class CustomerDTO {
     private String address;
     private String email;
     private String phone;
-    private String createdDate;
+    private LocalDateTime createdDate;
     private int isactive;
 
 }
