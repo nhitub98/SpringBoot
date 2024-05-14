@@ -15,6 +15,10 @@
     <table class="table table-bordered">
       <tbody>
       <tr>
+        <th>ID Order:</th>
+        <td><span th:text="${orders.id}"></span></td>
+      </tr>
+      <tr>
         <th>Orders Date:</th>
         <td><span th:text="${orders.ordersDate}"></span></td>
       </tr>
@@ -50,9 +54,42 @@
           </select>
         </td>
       </tr>
+      <tr>
+        <th>ID:</th>
+        <td><span th:text="${orders_details.id}"></span></td>
+      </tr>
+      <tr>
+        <th>ID Product:</th>
+        <td><span th:text="${orders_details.idproduct}"></span></td>
+      </tr>
+      <tr>
+        <th>Price</th>
+        <td><span th:text="${orders_details.price}"></span></td>
+      </tr>
+      <tr>
+        <th>Quantity</th>
+        <td><span th:text="${orders_details.qty}"></span></td>
+      </tr>
+
+      <tr>
+        <th>Total</th>
+        <td><span th:text="${orders_payment.id}"></span></td>
+      </tr>
+      <tr>
+        <th>ID transport</th>
+        <td><span th:text="${orders_transport.idtransport}"></span></td>
+      </tr>
+      <tr>
+      <tr>
+        <th>ID transport</th>
+        <td><span th:text="${orders_transport.idtransport}"></span></td>
+      </tr>
+      <tr>
+        <th>Total</th>
+        <td><span th:text="${orders_transport.total}"></span></td>
+      </tr>
       </tbody>
     </table>
-
     <button type="submit" class="btn btn-primary">Cập nhật</button>
   </form>
 </div>

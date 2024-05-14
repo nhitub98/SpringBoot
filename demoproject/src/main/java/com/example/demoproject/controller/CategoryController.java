@@ -38,9 +38,8 @@ public class CategoryController {
             String message = categoryService.saveCategory(categoryDTO, file);
             return message;
         } catch (Exception e) {
-            // Handle the exception here
-            e.printStackTrace(); // Log the exception for debugging (consider a proper logging framework)
-            return "Lỗi"; // Return a more informative error message
+            e.printStackTrace();
+            return "Lỗi";
         }
     }
 

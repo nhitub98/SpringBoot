@@ -19,19 +19,21 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
 
     @Override
     public Product toEntity(ProductDTO dto) {
-        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
-        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
+//        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
+//        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
         return Product.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .notes(dto.getNotes())
                 .image(dto.getImage())
-                .idcategory(dto.getIdcategory()) // Make sure categoryMapper is initialized
+                .category(categoryMapper.toEntity(dto.getCategoryDTO()))
                 .price(dto.getPrice())
-                .quatity(dto.getQuatity()) // corrected typo
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
+                .quatity(dto.getQuatity())
+//                .createdDate(createdDate)
+//                .updatedDate(updatedDate)
+                .createdDate(dto.getCreatedDate())
+                .updatedDate(dto.getUpdatedDate())
                 .createdBy(dto.getCreatedBy())
                 .updatedBy(dto.getUpdatedBy())
                 .isactive(dto.getIsactive())
@@ -40,9 +42,9 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
 
     @Override
     public ProductDTO toDto(Product entity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String createdDate = dateFormat.format(entity.getCreatedDate());
-        String updatedDate = dateFormat.format(entity.getUpdatedDate());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String createdDate = dateFormat.format(entity.getCreatedDate());
+//        String updatedDate = dateFormat.format(entity.getUpdatedDate());
         return ProductDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -51,9 +53,11 @@ public class ProductMapper implements EntityMapper<Product, ProductDTO> {
                 .image(entity.getImage())
                 .price(entity.getPrice())
                 .quatity(entity.getQuatity())
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
-                .idcategory(entity.getIdcategory()) // Make sure categoryMapper is initialized
+//                .createdDate(createdDate)
+//                .updatedDate(updatedDate)
+                .createdDate(entity.getCreatedDate())
+                .updatedDate(entity.getUpdatedDate())
+                .categoryDTO(categoryMapper.toDto(entity.getCategory()))
                 .createdBy(entity.getCreatedBy())
                 .updatedBy(entity.getUpdatedBy())
                 .isactive(entity.getIsactive())

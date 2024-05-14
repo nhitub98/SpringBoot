@@ -14,8 +14,8 @@ import java.util.List;
 public class CategoryMapper implements EntityMapper<Category, CategoryDTO> {
     @Override
     public Category toEntity(CategoryDTO dto) {
-        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
-        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
+//        Timestamp createdDate = DateUtils.stringToTimestamp(dto.getCreatedDate());
+//        Timestamp updatedDate = DateUtils.stringToTimestamp(dto.getUpdatedDate());
 
         return Category.builder()
                 .id(dto.getId())
@@ -23,8 +23,10 @@ public class CategoryMapper implements EntityMapper<Category, CategoryDTO> {
                 .name(dto.getName())
                 .notes(dto.getNotes())
                 .icon(dto.getIcon())
-                .createdDate(createdDate)
-                .updatedDate(updatedDate)
+                .createdDate(dto.getCreatedDate())
+                .createdDate(dto.getCreatedDate())
+//                .createdDate(createdDate)
+//                .updatedDate(updatedDate)
                 .createdBy(dto.getCreatedBy())
                 .updatedBy(dto.getUpdatedBy())
                 .isactive(dto.getIsactive())
@@ -33,9 +35,9 @@ public class CategoryMapper implements EntityMapper<Category, CategoryDTO> {
 
     @Override
     public CategoryDTO toDto(Category entity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String createdDateString = dateFormat.format(entity.getCreatedDate());
-        String updatedDateString = dateFormat.format(entity.getUpdatedDate());
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String createdDateString = dateFormat.format(entity.getCreatedDate());
+//        String updatedDateString = dateFormat.format(entity.getUpdatedDate());
 
         return CategoryDTO.builder()
                 .id(entity.getId())
@@ -43,8 +45,10 @@ public class CategoryMapper implements EntityMapper<Category, CategoryDTO> {
                 .name(entity.getName())
                 .notes(entity.getNotes())
                 .icon(entity.getIcon())
-                .createdDate(createdDateString)
-                .updatedDate(updatedDateString)
+//                .createdDate(createdDateString)
+//                .updatedDate(updatedDateString)
+                .createdDate(entity.getCreatedDate())
+                .updatedDate(entity.getUpdatedDate())
                 .createdBy(entity.getCreatedBy())
                 .updatedBy(entity.getUpdatedBy())
                 .isactive(entity.getIsactive())

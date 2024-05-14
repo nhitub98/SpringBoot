@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -47,4 +49,10 @@ public class Customer {
 
     @Column(name = "ISACTIVE")
     private int isactive;
+
+    @OneToMany
+    @JoinColumn(name = "idcustomer")
+    List<Orders> orders=new ArrayList<>();
+    @Column(name = "ROLE")
+    private Integer role;
 }

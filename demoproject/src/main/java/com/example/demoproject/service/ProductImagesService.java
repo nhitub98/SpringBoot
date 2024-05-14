@@ -82,8 +82,7 @@ public class ProductImagesService {
     public void deleteProductImages(int id) {
         productImagesRepository.deleteById(id);
     }
-    public List<ProductImages> findByProductId(Integer idProduct) {
-        return productImagesRepository.findByIdProduct(idProduct);
+
     }
 
-}
+

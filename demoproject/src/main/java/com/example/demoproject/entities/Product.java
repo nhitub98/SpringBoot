@@ -1,5 +1,6 @@
 package com.example.demoproject.entities;
 
+import com.example.demoproject.dto.CategoryDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +38,10 @@ public class Product {
     @Column(name = "IMAGE")
     private String image;
 
-    @Column(name = "IDCATEGORY")
-    private Integer idcategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "IDCATEGORY")
+    private Category category;
+
 
     @Column(name = "PRICE")
     private Double price;
@@ -45,15 +49,15 @@ public class Product {
     @Column(name = "QUATITY")
     private Integer quatity;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "CREATED_DATE")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "UPDATED_DATE")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "CREATED_BY")
     private String createdBy;
@@ -66,6 +70,11 @@ public class Product {
 
     @OneToMany
     @JoinColumn(name = "ID_PRODUCT")
-    List<ProductImages> productImages=new ArrayList<>();
+    private List<ProductImages> productImages = new ArrayList<>();
+
+
+
+
+
 
 }

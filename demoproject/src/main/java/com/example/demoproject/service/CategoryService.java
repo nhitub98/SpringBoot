@@ -3,6 +3,7 @@ package com.example.demoproject.service;
 import com.example.demoproject.dto.CategoryDTO;
 import com.example.demoproject.entities.Category;
 import com.example.demoproject.mapper.CategoryMapper;
+import com.example.demoproject.projection.ICategory;
 import com.example.demoproject.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -58,12 +59,11 @@ public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "
         }
 
         Category category = categoryMapper.toEntity(categoryDTO);
-        category.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
+        category.setCreatedDate(LocalDateTime.now());
+        category.setUpdatedDate(LocalDateTime.now());
         categoryRepository.save(category);
         return "Thêm thành công";
     }
-
-
 
     public String updateCategory(int id, CategoryDTO categoryDTO, MultipartFile file) {
         boolean existsCategory = categoryRepository.existsById(id);
@@ -93,8 +93,10 @@ public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "
 
         Category category = categoryMapper.toEntity(categoryDTO);
         category.setId(id);
-        category.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
-        category.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
+//        category.setCreatedDate(Timestamp.valueOf(LocalDateTime.now()));
+//        category.setUpdatedDate(Timestamp.valueOf(LocalDateTime.now()));
+        category.setCreatedDate(LocalDateTime.now());
+        category.setUpdatedDate(LocalDateTime.now());
         categoryRepository.save(category);
         return "Cập nhật thành công";
     }
@@ -106,7 +108,5 @@ public static final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "
     public void deleteCategory(int id) {
         categoryRepository.deleteById(id);
     }
-
-
 
 }

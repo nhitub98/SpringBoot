@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -20,5 +22,8 @@ public class OrdersDTO {
     private String address;
     private String phone;
     private int status;
+    private List<OrdersDetailsDTO> ordersDetailsDTOList;
+    private OrdersPaymentDTO ordersPaymentDTO;
+    private OrdersTransportDTO ordersTransportDTO;
 
 }

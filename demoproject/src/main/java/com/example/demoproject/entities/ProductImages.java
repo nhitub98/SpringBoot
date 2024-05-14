@@ -28,10 +28,8 @@ public class ProductImages {
     @Column(name = "URL")
     private String url;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_PRODUCT")
+    private Product idProduct;
 
-    @Column(name = "ID_PRODUCT")
-    private Integer idProduct;
-
-//    @OneToMany(mappedBy = "product")
-//    private List<ProductImages> productImages= new ArrayList<>();
 }

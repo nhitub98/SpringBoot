@@ -28,10 +28,7 @@ public class ProductImagesController {
         return productImagesService.findById(id);
     }
 
-    @GetMapping("/productimage/{idproduct}")
-    public List<ProductImages> getProductImagesByIdProduct(@PathVariable int idproduct) {
-        return productImagesService.findByProductId(idproduct);
-    }
+
 
     @PostMapping("/add")
     public String saveProductImages(@RequestBody ProductImagesDTO productImagesDTO, MultipartFile file) {

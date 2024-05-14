@@ -18,7 +18,7 @@ public class ProductImagesMapper implements EntityMapper<ProductImages, ProductI
                 .id(dto.getId())
                 .name(dto.getName())
                 .url(dto.getUrl())
-                .idProduct(dto.getIdProduct())
+//                .idProduct(ProductImagesMapper.toDto(toEntity.getIdProduct()))
                 .build();
     }
 
@@ -29,7 +29,7 @@ public class ProductImagesMapper implements EntityMapper<ProductImages, ProductI
                 .id(entity.getId())
                 .name(entity.getName())
                 .url(entity.getUrl())
-//                .idProduct(entity.getIdProduct())
+//                .idProduct(ProductImagesMappe.to.getIdProduct())
                 .build();
     }
 

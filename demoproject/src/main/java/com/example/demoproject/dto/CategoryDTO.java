@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Date;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -16,8 +18,8 @@ public class CategoryDTO  {
     private String name;
     private String notes;
     private String icon;
-    private String createdDate;
-    private String updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
     private String createdBy;
     private String updatedBy;
     private int isactive; //để là 0,1

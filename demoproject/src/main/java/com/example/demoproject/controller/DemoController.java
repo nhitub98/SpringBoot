@@ -1,25 +1,33 @@
 package com.example.demoproject.controller;
 
 import com.example.demoproject.dto.*;
+import com.example.demoproject.entities.Category;
+import com.example.demoproject.entities.Customer;
 import com.example.demoproject.mapper.CategoryMapper;
 import com.example.demoproject.repository.*;
 import com.example.demoproject.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class DemoController {
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductRepository productRepository;
     @Autowired
     CategoryMapper categoryMapper;
     @Autowired
@@ -44,22 +52,35 @@ public class DemoController {
     ProductImagesService productImagesService;
     @Autowired
     ProductImagesRepository productImagesRepository;
+    @Autowired
+    OrdersDetailsService orderDetailsService;
+    @Autowired
+    OrdersPaymentService ordersPaymentService;
+    @Autowired
+    OrdersTransportService ordersTransportService;
+    @Autowired
+    CustomerRepository customerRepository;
+
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/products")
     public String findAllProduct(Model model) {
         List<ProductDTO> productDTOList = productService.findAll();
-
         for (ProductDTO productDTO : productDTOList) {
             String baseUrl = "/img/";
             productDTO.setImage(baseUrl + productDTO.getImage());
-        }
+
+            }
         model.addAttribute("product", productDTOList);
+        List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
+        model.addAttribute("categories", categoryDTOList);
         return "features/findallproduct";
     }
 
 
+
     @GetMapping("/add-product")
-    public String showAddProductForm(Model model) { //hiển thị form add product
+    public String showAddProductForm(Model model) {
         model.addAttribute("product", new ProductDTO());
         List<CategoryDTO> categoryDTOList = categoryService.findAllCategories();
         model.addAttribute("categories", categoryDTOList);
@@ -68,8 +89,12 @@ public class DemoController {
 
     @PostMapping("/add-product")
     public String addProduct(@ModelAttribute("product") ProductDTO productDTO,
-                             @RequestParam("file") MultipartFile file) throws IOException {
-        if (productDTO != null) {
+                             @RequestParam("file") MultipartFile file, Model model) throws IOException {
+        if (productDTO != null && productDTO.getCategoryDTO()!=null) {
+            Category category = categoryMapper.toEntity(productDTO.getCategoryDTO());
+            category = categoryRepository.save(category);
+            List<Category> allCategories = categoryRepository.findAll();
+            model.addAttribute("categories", allCategories);
             productService.saveProduct(productDTO, file);
         }
         return "redirect:/products";
@@ -79,14 +104,29 @@ public class DemoController {
     public String showUpdateProductForm(@PathVariable int id, Model model) {
         ProductDTO productDTO = productService.findById(id);
         model.addAttribute("product", productDTO);
+        Category category = categoryMapper.toEntity(productDTO.getCategoryDTO());
+        List<Category> categoryList = categoryRepository.findAll();
+        model.addAttribute("categories", categoryList);
         return "features/formeditproduct";
     }
-
     @PostMapping("/edit-product/{id}")
-    public String updateProduct(@PathVariable int id, @ModelAttribute("product") ProductDTO productDTO,@RequestParam("file") MultipartFile file) {
-        productService.updateProduct(id, productDTO, file);
-        return "redirect:/products";
+    public String updateProduct(@PathVariable int id, @ModelAttribute("product") ProductDTO productDTO, @RequestParam("file") MultipartFile file) {
+        try {
+            Category category = categoryMapper.toEntity(productDTO.getCategoryDTO());
+
+            Optional<Category> existingCategory = categoryRepository.findById(category.getId());
+            if (!existingCategory.isPresent()) {
+                return "Danh mục không tồn tại";
+            }
+            category = categoryRepository.save(category);
+            productService.updateProduct(id, productDTO, file);
+            return "redirect:/products";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Có lỗi xảy ra khi cập nhật sản phẩm";
+        }
     }
+
 
     @GetMapping("/delete-product/{id}")
     public String deleteProduct(@PathVariable("id") int id) {
@@ -239,15 +279,26 @@ public class DemoController {
     public String showUpdateOrdersForm(@PathVariable int id, Model model) {
         OrdersDTO ordersDTO = ordersService.findOrdersById(id);
         model.addAttribute("orders", ordersDTO);
+        OrdersDetailsDTO ordersDetailsDTO = orderDetailsService.findOrdersDetailsById(id);
+        model.addAttribute("orders_details", ordersDetailsDTO);
+        OrdersPaymentDTO ordersPaymentDTO = ordersPaymentService.findOrdersPaymentById(id);
+        model.addAttribute("orders_payment",ordersPaymentDTO);
+        OrdersTransportDTO ordersTransportDTO = ordersTransportService.findOrdersTransportById(id);
+        model.addAttribute("orders_transport",ordersTransportDTO);
         return "features/formeditorders";
     }
 
     @PostMapping("/edit-orders/{id}")
-    public String updateOrders(@ModelAttribute("orders") OrdersDTO ordersDTO, @PathVariable int id, @RequestParam("status") int status) {
+    public String updateOrders(@ModelAttribute("orders") OrdersDTO ordersDTO, @PathVariable int id, @RequestParam("status") int status,Model model) {
         ordersDTO.setId(id);
         ordersDTO.setStatus(status);
-
         ordersService.updateOrders(id, ordersDTO);
+        OrdersDetailsDTO ordersDetailsDTO = orderDetailsService.findOrdersDetailsById(id);
+        model.addAttribute("orders_details",ordersDetailsDTO);
+        OrdersPaymentDTO ordersPaymentDTO = ordersPaymentService.findOrdersPaymentById(id);
+        model.addAttribute("orders_payment",ordersPaymentDTO);
+        OrdersTransportDTO ordersTransportDTO = ordersTransportService.findOrdersTransportById(id);
+        model.addAttribute("orders_transport",ordersTransportDTO);
         return "redirect:/orders";
     }
 
@@ -300,4 +351,43 @@ public class DemoController {
         productImagesService.deleteProductImages(id);
         return "redirect:/productimages";
     }
+    @GetMapping("/login")
+    public String showFormLogin() {
+        return "layout/login";
+    }
+
+
+    @GetMapping("/register")
+    public String showFormRegister() {
+        return "layout/register";
+    }
+
+    @PostMapping("/registerAccount")
+    public String registerAccount(@ModelAttribute("customer") Customer customer, BindingResult result, Model model) {
+        if (result.hasErrors() || customerService.existsByUsernameOrEmail(customer.getUsername(), customer.getEmail())) {
+            return "layout/register";
+        }
+        try {
+            customer.setCreatedDate(new Date());
+            customerService.saveCustomer(customer);
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", "Registration failed. Please try again later.");
+            return "layout/register";
+        }
+    }
+    @GetMapping("/forgot-password")
+    public String showFormForgotPassWord() {
+        return "layout/forgot-password";
+    }
+
+
 }
+
+
+
+
+
+
+
+

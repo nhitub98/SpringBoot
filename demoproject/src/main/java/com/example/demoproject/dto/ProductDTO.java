@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,14 +19,16 @@ public class ProductDTO {
     private String description;
     private String notes;
     private String image;
-    private Integer idcategory;
+    private CategoryDTO categoryDTO;
     private Double price;
     private Integer quatity;
-    private String createdDate;
-    private String updatedDate;
+//    private String createdDate;
+//    private String updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
     private String createdBy;
     private String updatedBy;
     private int isactive;
-    private List<ProductImagesDTO> productImagesDTOS;
 
+    List<ProductImagesDTO> productImages = new ArrayList<>();
 }

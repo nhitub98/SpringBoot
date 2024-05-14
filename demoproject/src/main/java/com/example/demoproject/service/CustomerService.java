@@ -12,6 +12,7 @@ import com.example.demoproject.repository.PaymentMethodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -26,10 +27,28 @@ public class CustomerService {
     }
 
     public CustomerDTO findCustomerById(int id) {
-        Customer customer= customerRepository.findById(id).orElse(null);
+        Customer customer = customerRepository.findById(id).orElse(null);
         if (customer == null) {
             return null;
         }
         return customerMapper.toDto(customer);
     }
+
+    public boolean existsByUsernameOrEmail(String username, String email) {
+        List<Customer> customers = customerRepository.findAll();
+        for (Customer customer : customers) {
+            if (customer.getUsername().equals(username) || customer.getEmail().equals(email)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void saveCustomer(Customer customer) {
+        customer.setRole(2);
+        customerRepository.save(customer);
+    }
+
+
 }

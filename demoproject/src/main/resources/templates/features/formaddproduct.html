@@ -8,51 +8,45 @@
 <div layout:fragment="content" class="container-fluid">
     <form th:action="@{/add-product}"  th:object="${product}" method="POST" enctype="multipart/form-data">
         <label for="name">Tên sản phẩm:</label><br>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name" th:field="*{name}" required><br>
 
         <label for="description">Mô tả:</label><br>
-        <textarea id="description" name="description" required></textarea><br>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea><br>
 
         <label for="notes">Ghi chú:</label><br>
-        <textarea id="notes" name="notes"></textarea><br>
+        <textarea id="notes" name="notes" th:field="*{notes}"></textarea><br>
 
         <label for="file">Hình ảnh:</label><br>
         <input type="file" id="file" name="file" accept="image/*" required><br><br>
 
-        <label for="idcategory">Categories</label><br>
-        <select id="idcategory" th:field="*{idcategory}" required>
-            <option value="">Categories</option>
+        <label for="idcategory">Danh mục:</label><br>
+        <select id="idcategory" name="idcategory" required>
+            <option value="">Chọn danh mục</option>
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
         </select><br>
 
         <label for="price">Giá:</label><br>
-        <input type="number" id="price" name="price" step="0.01" min="0" required><br>
+        <input type="number" id="price" name="price" step="0.01" min="0" th:field="*{price}" required><br>
 
         <label for="quatity">Số lượng:</label><br>
-        <input type="number" id="quatity" name="quatity" min="0" required><br>
+        <input type="number" id="quatity" name="quatity" min="0" th:field="*{quatity}" required><br>
 
-
-        <label for="createdDate">Created Date</label>
+        <label for="createdDate">Ngày tạo:</label>
         <input type="datetime-local" id="createdDate" name="createdDate" th:field="*{createdDate}"><br>
 
-
-        <label for="updatedDate">Updated Date</label>
+        <label for="updatedDate">Ngày cập nhật:</label>
         <input type="datetime-local" id="updatedDate" name="updatedDate" th:field="*{updatedDate}"><br>
 
-
-        <label for="createdBy">Created By</label>
+        <label for="createdBy">Người tạo:</label>
         <input type="text" id="createdBy" name="createdBy" th:field="*{createdBy}"><br><br>
 
-
-        <label for="updatedBy">Updated By</label>
+        <label for="updatedBy">Người cập nhật:</label>
         <input type="text" id="updatedBy" name="updatedBy" th:field="*{updatedBy}"><br><br>
 
-
-        <label for="isactive">Isactive</label>
+        <label for="isactive">Is Active:</label>
         <input type="text" id="isactive" name="isactive" th:field="*{isactive}"><br><br>
 
-
-        <input type="submit" value="Send">
+        <input type="submit" value="Gửi">
     </form>
 </div>
 </body>

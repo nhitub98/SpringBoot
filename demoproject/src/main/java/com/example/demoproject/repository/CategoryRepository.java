@@ -1,6 +1,7 @@
 package com.example.demoproject.repository;
 
 import com.example.demoproject.entities.Category;
+import com.example.demoproject.projection.ICategory;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,6 +23,8 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 //            "WHERE IDPARENT IS NULL;", nativeQuery = true)
 //    List<Category> findAllCategory();
 
+
 }
+
 
 
